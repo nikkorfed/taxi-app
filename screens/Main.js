@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, SafeAreaView, View, Text, TouchableOpacity } from "react-native";
 
 import { StatusBar } from "expo-status-bar";
 
-export default Main = () => {
+export default Main = ({ navigation }) => {
   return (
     <>
       <StatusBar style="auto" />

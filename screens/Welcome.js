@@ -4,7 +4,6 @@ import { StyleSheet, SafeAreaView, View, Text, TouchableOpacity } from "react-na
 import { FontAwesome5 } from "@expo/vector-icons";
 
 export default Welcome = ({ navigation }) => {
-  let navigateToMain = () => navigation.reset({ index: 0, routes: [{ name: "Main" }] });
   return (
     <SafeAreaView style={styles.body}>
       <View style={styles.wrapper}>
@@ -13,7 +12,7 @@ export default Welcome = ({ navigation }) => {
         </View>
         <Text style={styles.title}>Такси</Text>
         <Text style={styles.subtitle}>Добро пожаловать в наше приложение! Чтобы заказать такси, нажмите на кнопку.</Text>
-        <TouchableOpacity style={styles.button} onPress={navigateToMain} activeOpacity={0.7}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()} activeOpacity={0.7}>
           <Text style={styles.buttonText}>Заказать такси</Text>
         </TouchableOpacity>
       </View>
@@ -25,6 +24,7 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
     backgroundColor: "white",
+    opacity: 0.95,
   },
   wrapper: {
     flex: 1,
