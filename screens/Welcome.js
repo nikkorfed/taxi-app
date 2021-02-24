@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
     backgroundColor: "white",
-    opacity: 0.95,
+    opacity: 0.9,
   },
   wrapper: {
     flex: 1,

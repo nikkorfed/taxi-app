@@ -1,17 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, SafeAreaView, View, Text, TouchableOpacity } from "react-native";
+
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 
 import { StatusBar } from "expo-status-bar";
 
 export default Main = ({ navigation }) => {
+  const [position, setPosition] = useState({ latitude: 0, longitude: 0, latitudeDelta: 0.015, longitudeDelta: 0.015 });
+  useEffect(
+    () =>
+      navigator.geolocation.getCurrentPosition((position) =>
+        setPosition({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.015,
+        })
+      ),
+    []
+  );
+
   return (
     <>
       <StatusBar style="auto" />
-      <SafeAreaView style={styles.body}>
-        <View style={styles.wrapper}>
-          <Text>Здесь будет карта. Ага!</Text>
-        </View>
-      </SafeAreaView>
+      <MapView provider={PROVIDER_GOOGLE} region={position} showsUserLocation={true} style={{ flex: 1 }} />
     </>
   );
 };
