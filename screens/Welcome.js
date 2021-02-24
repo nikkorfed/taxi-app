@@ -1,9 +1,17 @@
 import React, { useState } from "react";
-import { StyleSheet, SafeAreaView, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, SafeAreaView, View, Text, TouchableOpacity, Alert } from "react-native";
 
 import { FontAwesome5 } from "@expo/vector-icons";
 
+import { showLocation } from "react-native-map-link";
+
 export default Welcome = ({ navigation }) => {
+  let coords = { latitude: 38.8976763, longitude: -77.0387185 };
+  // Alert.alert("Где открыть?", "Выберите приложенние, в котором вы хотите посмотреть указанную локацию.", [
+  //   { text: "Яндекс Go", onPress: () => showLocation({ ...coords, app: "yandex-taxi" }) },
+  //   { text: "Яндекс Карты", onPress: () => showLocation({ ...coords, app: "yandex-maps" }) },
+  //   { text: "Apple Карты", onPress: () => showLocation({ ...coords, app: "apple-maps" }) },
+  // ]);
   return (
     <SafeAreaView style={styles.body}>
       <View style={styles.wrapper}>

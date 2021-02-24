@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, SafeAreaView, View, Text, TouchableOpacity } from "react-native";
 
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
-
 import { StatusBar } from "expo-status-bar";
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+// import MapView from "../react-native-maps";
+import { WebView } from "react-native-webview";
 
-export default Main = ({ navigation }) => {
+export default Main = () => {
   const [position, setPosition] = useState({ latitude: 0, longitude: 0, latitudeDelta: 0.015, longitudeDelta: 0.015 });
   useEffect(
     () =>
@@ -24,6 +25,7 @@ export default Main = ({ navigation }) => {
     <>
       <StatusBar style="auto" />
       <MapView provider={PROVIDER_GOOGLE} region={position} showsUserLocation={true} style={{ flex: 1 }} />
+      {/* <WebView source={{ uri: "https://2gis.ru/ekaterinburg" }} style={{ marginTop: 20 }} /> */}
     </>
   );
 };
