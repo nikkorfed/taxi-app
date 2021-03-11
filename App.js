@@ -7,8 +7,8 @@ import AppLoading from "expo-app-loading";
 
 import { useFonts, Rubik_400Regular, Rubik_500Medium, Rubik_700Bold } from "@expo-google-fonts/rubik";
 
-import Welcome from "./screens/Welcome";
 import Main from "./screens/Main";
+import Welcome from "./navigators/Welcome";
 
 export default App = () => {
   let [fontsLoaded] = useFonts({ Rubik_400Regular, Rubik_500Medium, Rubik_700Bold });

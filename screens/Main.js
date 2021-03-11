@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, SafeAreaView, View, Text, TextInput, TouchableWithoutFeedback, TouchableHighlight } from "react-native";
+import { StyleSheet, SafeAreaView, View, Text, TextInput, TouchableHighlight } from "react-native";
 
 import { StatusBar } from "expo-status-bar";
 import { AntDesign } from "@expo/vector-icons";
@@ -106,12 +106,12 @@ export default Main = () => {
         mapType="none"
         showsUserLocation={true}
         onUserLocationChange={(e) => setUserLocation(e.nativeEvent.coordinate)}
-        style={{ flex: 1 }}
+        style={{ flex: 1, opacity: 0.8 }}
         ref={map}
       >
-        {/* <UrlTile urlTemplate="http://c.tile.openstreetmap.org/{z}/{x}/{y}.png" /> */}
         <UrlTile urlTemplate="https://tile2.maps.2gis.com/tiles?x={x}&y={y}&z={z}&v=1&r=g&ts=online_hd" />
-        {Boolean(route.length) && <Polyline coordinates={route} strokeColor="dodgerblue" strokeWidth={5} />}
+        {/* <UrlTile urlTemplate="http://vec04.maps.yandex.net/tiles?l=map&v=4.55.2&z={z}&x={x}&y={y}&scale=2&lang=ru_RU" /> */}
+        {Boolean(route.length) && <Polyline coordinates={route} strokeColor="dodgerblue" strokeWidth={5} style={{ zIndex: 3 }} />}
         {Boolean(route.length) && <Marker coordinate={route[route.length - 1]} />}
       </MapView>
       <View style={styles.top}>

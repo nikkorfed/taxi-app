@@ -1,45 +1,24 @@
 import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
-export default Button = ({ title, onPress, color, shadow, style }) => {
-  let buttonStyle = { ...styles.button };
-  let buttonTextStyle = { ...styles.buttonText };
+import { AntDesign } from "@expo/vector-icons";
 
-  if (color) {
-    buttonStyle = { ...buttonStyle, ...styles.color };
-    buttonTextStyle = { ...buttonTextStyle, ...styles.white };
-  }
-  if (shadow) buttonStyle = { ...buttonStyle, ...styles.shadow };
-  if (style) buttonStyle = { ...buttonStyle, ...style };
+import styles from "../styles";
 
-  return (
-    <TouchableOpacity style={buttonStyle} onPress={onPress} activeOpacity={0.8}>
-      <Text style={buttonTextStyle}>{title}</Text>
-    </TouchableOpacity>
-  );
-};
+export let BackButton = ({ style, ...props }) => (
+  <TouchableOpacity style={{ ...styles.back, ...style }} activeOpacity={0.8} {...props}>
+    <AntDesign name="arrowleft" size={30} color="dodgerblue" />
+  </TouchableOpacity>
+);
 
-const styles = StyleSheet.create({
-  button: {
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 10,
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    backgroundColor: "white",
-  },
-  color: { backgroundColor: "dodgerblue" },
-  shadow: {
-    shadowColor: "black",
-    shadowOffset: { height: 0, width: 0 },
-    shadowRadius: 10,
-    shadowOpacity: 0.15,
-  },
-  buttonText: {
-    fontFamily: "Rubik_500Medium",
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  white: { color: "white" },
-});
+export let Button = ({ style, title, ...props }) => (
+  <TouchableOpacity style={{ ...styles.button, ...style }} activeOpacity={0.8} {...props}>
+    <Text style={styles.buttonText}>{title}</Text>
+  </TouchableOpacity>
+);
+
+export let SimpleButton = ({ style, title, ...props }) => (
+  <TouchableOpacity style={{ ...styles.button, ...styles.simpleButton }} {...props}>
+    <Text style={{ ...styles.buttonText, color: "dodgerblue" }}>{title}</Text>
+  </TouchableOpacity>
+);
