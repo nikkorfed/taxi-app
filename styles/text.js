@@ -8,10 +8,10 @@ export default styles = StyleSheet.create({
     fontWeight: "bold",
   },
   subtitle: {
-    marginBottom: 10,
+    marginBottom: 15,
     fontFamily: "Rubik_400Regular",
-    fontSize: 20,
-    lineHeight: 30,
+    fontSize: 18,
+    lineHeight: 28,
     color: "#888",
   },
   error: {

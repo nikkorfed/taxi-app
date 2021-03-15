@@ -15,15 +15,21 @@ import styles from "../styles";
 export default Login = ({ navigation }) => {
   const [phone, setPhone] = useState("+7");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   const { api, loading, error } = useApi();
   const auth = useAuth();
 
   const loginInput = useRef(null);
   const passwordInput = useRef(null);
+  const nameInput = useRef(null);
+  const lastNameInput = useRef(null);
 
   const loginProps = { type: "custom", options: { mask: "+7 999 999-99-99" }, keyboardType: "number-pad", ref: loginInput };
   const passwordProps = { secureTextEntry: true, placeholder: "Пароль", ref: passwordInput };
+  const nameProps = { placeholder: "Имя", ref: nameInput };
+  const lastNameProps = { placeholder: "Фамилия", ref: lastNameInput };
 
   let editPhone = (text) => {
     text == "" || text == "+" ? setPhone("+7") : setPhone(text);
@@ -33,9 +39,11 @@ export default Login = ({ navigation }) => {
   let blur = () => {
     loginInput.current.getElement().blur();
     passwordInput.current.blur();
+    nameInput.current.blur();
+    lastNameInput.current.blur();
   };
 
-  let submitLogin = async () => {
+  let submitSignup = async () => {
     const response = await api.users.auth({ phone, password });
     if (!response.error) auth.logIn(response.data.token);
   };
@@ -48,14 +56,16 @@ export default Login = ({ navigation }) => {
           <View style={wrapper}>
             <View>
               <BackButton onPress={() => navigation.goBack()} />
-              <Text style={styles.title}>Вход</Text>
-              <Text style={styles.subtitle}>Введите свой телефон и пароль, чтобы авторизоваться и начать пользоваться приложением.</Text>
+              <Text style={styles.title}>Регистрация</Text>
+              <Text style={styles.subtitle}>Введите имя и фамилию, а также придумайте пароль.</Text>
               <TextInputMask style={input} value={phone} onChangeText={editPhone} {...loginProps} />
               <TextInput style={input} value={password} onChangeText={setPassword} {...passwordProps} />
+              <TextInput style={input} value={name} onChangeText={setName} {...nameProps} />
+              <TextInput style={input} value={lastName} onChangeText={setLastName} {...lastNameProps} />
               <ErrorMessage error={error} />
             </View>
             <View>
-              <Button style={button} title="Войти" onPress={submitLogin} />
+              <Button style={button} title="Зарегистрироваться" onPress={submitSignup} />
               <Text style={styles.agreement}>Нажимая на эту кнопку, я на всё подписываюсь и соглашаюсь со всем, с чем только можно.</Text>
             </View>
           </View>

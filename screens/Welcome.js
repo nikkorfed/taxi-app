@@ -3,7 +3,7 @@ import { StyleSheet, SafeAreaView, View, Text } from "react-native";
 
 import { FontAwesome5 } from "@expo/vector-icons";
 
-import { Button } from "../components/Button";
+import { Button, SimpleButton } from "../components/Button";
 import styles from "../styles";
 
 export default Welcome = ({ navigation }) => {
@@ -16,7 +16,8 @@ export default Welcome = ({ navigation }) => {
         <Text style={styles.title}>Такси</Text>
         <Text style={subtitle}>Добро пожаловать! Войдите или зарегистрируйтесь, чтобы начать пользоваться приложением.</Text>
         <View style={styles.bottomButtons}>
-          <Button title="Начать" onPress={() => navigation.navigate("Login")} />
+          <Button style={loginButton} title="Вход" onPress={() => navigation.navigate("Login")} />
+          <SimpleButton style={signupButton} title="Регистрация" onPress={() => navigation.navigate("Signup")} />
         </View>
       </View>
     </SafeAreaView>
@@ -34,3 +35,5 @@ const icon = {
   width: 100,
   backgroundColor: "#f5f5f5",
 };
+const loginButton = { marginBottom: 5 };
+const signupButton = { marginBottom: -10 };

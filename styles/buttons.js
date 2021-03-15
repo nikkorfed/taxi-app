@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 export default styles = StyleSheet.create({
   back: {
     marginTop: 20,
+    marginBottom: 10,
   },
   bottomButtons: {
     position: "absolute",

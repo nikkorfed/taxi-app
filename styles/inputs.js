@@ -6,7 +6,7 @@ export default styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 20,
     fontFamily: "Rubik_500Medium",
-    fontSize: 16,
+    fontSize: 15,
     backgroundColor: "#f5f5f5",
   },
 });

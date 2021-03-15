@@ -18,7 +18,7 @@ export let Button = ({ style, title, ...props }) => (
 );
 
 export let SimpleButton = ({ style, title, ...props }) => (
-  <TouchableOpacity style={{ ...styles.button, ...styles.simpleButton }} {...props}>
+  <TouchableOpacity style={{ ...styles.button, ...styles.simpleButton, ...style }} {...props}>
     <Text style={{ ...styles.buttonText, color: "dodgerblue" }}>{title}</Text>
   </TouchableOpacity>
 );

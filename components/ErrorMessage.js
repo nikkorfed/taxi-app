@@ -5,5 +5,5 @@ import styles from "../styles";
 
 export default ({ error }) => {
   if (!error) return null;
-  return <Text style={styles.error}>{error.message}</Text>;
+  return <Text style={styles.error}>{error}</Text>;
 };
