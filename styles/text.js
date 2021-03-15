@@ -14,4 +14,7 @@ export default styles = StyleSheet.create({
     lineHeight: 30,
     color: "#888",
   },
+  error: {
+    color: "red",
+  },
 });

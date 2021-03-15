@@ -6,10 +6,12 @@ import { StatusBar } from "expo-status-bar";
 import { AntDesign } from "@expo/vector-icons";
 import MapView, { UrlTile, Marker, Polyline, PROVIDER_GOOGLE } from "react-native-maps";
 
+import useAuth from "../hooks/auth";
+
 import { parseRoute } from "../utils/route";
 import sleep from "../utils/sleep";
 
-import Button from "../components/Button";
+import { Button } from "../components/Button";
 
 export default Main = () => {
   const [userLocation, setUserLocation] = useState({ latitude: 0, longitude: 0 });
@@ -18,6 +20,7 @@ export default Main = () => {
   const [options, setOptions] = useState([]);
   const [route, setRoute] = useState([]);
 
+  let auth = useAuth();
   let map = useRef(null);
 
   let toLocation = (target) => map.current.animateCamera({ center: target, zoom: 16 }, { duration: 300 });
@@ -156,6 +159,7 @@ export default Main = () => {
         </View>
       </View>
       <View style={styles.bottom}>
+        {<Button title="Выйти" onPress={auth.logOut} />}
         {Boolean(from.point) && Boolean(to.point) && !route.length && (
           <Button title="Поехали" onPress={drawRoute} color={true} shadow={true} style={{ marginTop: 10, width: "100%" }} />
         )}
