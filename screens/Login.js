@@ -1,39 +1,22 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
-import { SafeAreaView, View, Text, TextInput, TouchableWithoutFeedback } from "react-native";
-
-import { TextInputMask } from "react-native-masked-text";
+import React, { useState } from "react";
+import { SafeAreaView, View, Text, TouchableWithoutFeedback, Keyboard } from "react-native";
 
 import useAuth from "../hooks/auth";
 import useApi from "../hooks/api";
 
 import ActivityIndicator from "../components/ActivityIndicator";
 import ErrorMessage from "../components/ErrorMessage";
+import { PhoneInput, PasswordInput } from "../components/TextInput";
 import { Button, BackButton } from "../components/Button";
 
 import styles from "../styles";
 
 export default Login = ({ navigation }) => {
-  const [phone, setPhone] = useState("+7");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
 
   const { api, loading, error } = useApi();
   const auth = useAuth();
-
-  const loginInput = useRef(null);
-  const passwordInput = useRef(null);
-
-  const loginProps = { type: "custom", options: { mask: "+7 999 999-99-99" }, keyboardType: "number-pad", ref: loginInput };
-  const passwordProps = { secureTextEntry: true, placeholder: "Пароль", ref: passwordInput };
-
-  let editPhone = (text) => {
-    text == "" || text == "+" ? setPhone("+7") : setPhone(text);
-    text.length == 16 ? blur() : null;
-  };
-
-  let blur = () => {
-    loginInput.current.getElement().blur();
-    passwordInput.current.blur();
-  };
 
   let submitLogin = async () => {
     const response = await api.users.auth({ phone, password });
@@ -44,14 +27,14 @@ export default Login = ({ navigation }) => {
     <>
       <ActivityIndicator visible={loading} />
       <SafeAreaView style={styles.body}>
-        <TouchableWithoutFeedback onPress={blur}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={wrapper}>
             <View>
               <BackButton onPress={() => navigation.goBack()} />
               <Text style={styles.title}>Вход</Text>
               <Text style={styles.subtitle}>Введите свой телефон и пароль, чтобы авторизоваться и начать пользоваться приложением.</Text>
-              <TextInputMask style={input} value={phone} onChangeText={editPhone} {...loginProps} />
-              <TextInput style={input} value={password} onChangeText={setPassword} {...passwordProps} />
+              <PhoneInput style={input} state={[phone, setPhone]} />
+              <PasswordInput style={input} state={[password, setPassword]} />
               <ErrorMessage error={error} />
             </View>
             <View>
@@ -66,5 +49,5 @@ export default Login = ({ navigation }) => {
 };
 
 const wrapper = { ...styles.wrapper, justifyContent: "space-between" };
-const input = { ...styles.input, marginBottom: 10 };
+const input = { marginBottom: 10 };
 const button = { marginBottom: 10 };

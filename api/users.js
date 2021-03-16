@@ -1,4 +1,4 @@
 import api from "./api";
 
-export const getAll = () => api.get("/users");
+export const register = (body) => api.post("/users", body);
 export const auth = (body) => api.post("/users/auth", body);
