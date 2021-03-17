@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AppLoading from "expo-app-loading";
 import { NavigationContainer } from "@react-navigation/native";
 
@@ -7,8 +7,8 @@ import useFonts from "./hooks/fonts";
 import AuthContext from "./auth/context";
 import authStorage from "./auth/storage";
 
-import Main from "./screens/Main";
 import Auth from "./navigators/Auth";
+import Main from "./navigators/Main";
 
 export default App = () => {
   const [isReady, setIsReady] = useState(false);
@@ -17,6 +17,7 @@ export default App = () => {
 
   const fontsLoaded = useFonts();
 
+  // Возможно, вынести в хук useAuth()
   let restoreUser = async () => {
     const user = await authStorage.getUser();
     if (user) setUser(user);

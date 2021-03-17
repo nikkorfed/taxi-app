@@ -13,7 +13,7 @@ import sleep from "../utils/sleep";
 
 import { Button } from "../components/Button";
 
-export default Main = () => {
+export default Main = ({ navigation }) => {
   const [userLocation, setUserLocation] = useState({ latitude: 0, longitude: 0 });
   const [from, setFrom] = useState({ full_name: "" });
   const [to, setTo] = useState({ full_name: "" });
@@ -159,8 +159,7 @@ export default Main = () => {
         </View>
       </View>
       <View style={styles.bottom}>
-        {<Button title="Выйти" onPress={auth.logOut} />}
-        {<Button title="Обо мне" onPress={auth.me} />}
+        {<Button title="Выйти" onPress={auth.logout} />}
         {Boolean(from.point) && Boolean(to.point) && !route.length && (
           <Button title="Поехали" onPress={drawRoute} color={true} shadow={true} style={{ marginTop: 10, width: "100%" }} />
         )}

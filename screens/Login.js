@@ -1,36 +1,18 @@
 import React, { useState } from "react";
 import { SafeAreaView, View, Text, TouchableWithoutFeedback, Keyboard } from "react-native";
 
-import * as Notifications from "expo-notifications";
-import * as Permissions from "expo-permissions";
-
 import useAuth from "../hooks/auth";
-import useApi from "../hooks/api";
 
 import ActivityIndicator from "../components/ActivityIndicator";
 import ErrorMessage from "../components/ErrorMessage";
-import { PhoneInput, PasswordInput } from "../components/Inputs";
+import { PhoneInput } from "../components/Inputs";
 import { Button, BackButton } from "../components/Button";
 
 import styles from "../styles";
 
 export default Login = ({ navigation }) => {
-  const [phone, setPhone] = useState("");
-
-  const { api, loading, error } = useApi();
-  const auth = useAuth();
-
-  // Возможно, вынести этот код в хук
-  let submitLogin = async () => {
-    const permission = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-    if (!permission.granted) return;
-
-    const pushToken = await Notifications.getExpoPushTokenAsync().catch((error) => console.log("Ошибка при получении Push-токена:", error));
-    const response = await api.users.auth({ phone, pushToken: pushToken.data });
-    auth.setData({ phone });
-
-    if (!response.error) navigation.navigate("CodeEntry");
-  };
+  const [phone, setPhone] = useState(""); // Возможно, вынести в хук авторизации
+  const { submitLogin, loading, error } = useAuth();
 
   return (
     <>
@@ -46,7 +28,7 @@ export default Login = ({ navigation }) => {
               <ErrorMessage error={error} />
             </View>
             <View>
-              <Button style={button} title="Далее" onPress={submitLogin} />
+              <Button style={button} title="Далее" onPress={() => submitLogin(phone)} />
               <Text style={styles.agreement}>Нажимая на эту кнопку, я на всё подписываюсь и соглашаюсь со всем, с чем только можно.</Text>
             </View>
           </View>

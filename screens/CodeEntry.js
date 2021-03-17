@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { SafeAreaView, View, Text, TouchableWithoutFeedback, Keyboard } from "react-native";
 
 import useAuth from "../hooks/auth";
-import useApi from "../hooks/api";
 
 import ActivityIndicator from "../components/ActivityIndicator";
 import ErrorMessage from "../components/ErrorMessage";
@@ -12,17 +11,8 @@ import { Button, BackButton } from "../components/Button";
 import styles from "../styles";
 
 export default Login = ({ navigation }) => {
-  const [code, setCode] = useState("");
-
-  const { api, loading, error } = useApi();
-  const auth = useAuth();
-
-  let submitCode = async () => {
-    const response = await api.users.authConfirm({ phone: auth.data.phone, code });
-    if (response.error) return;
-    if (response.data.register) auth.setData({ ...auth.data, token: response.data.token }) && navigation.navigate("Register");
-    else auth.logIn(response.data.token);
-  };
+  const [code, setCode] = useState(""); // Возможно, вынести в хук авторизации
+  const { submitCode, error, loading } = useAuth();
 
   return (
     <>
@@ -38,7 +28,7 @@ export default Login = ({ navigation }) => {
               <ErrorMessage error={error} />
             </View>
             <View>
-              <Button style={button} title="Далее" onPress={submitCode} />
+              <Button style={button} title="Далее" onPress={() => submitCode(code)} />
               <Text style={styles.agreement}>Нажимая на эту кнопку, я на всё подписываюсь и соглашаюсь со всем, с чем только можно.</Text>
             </View>
           </View>

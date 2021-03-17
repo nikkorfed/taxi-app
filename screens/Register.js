@@ -2,26 +2,18 @@ import React, { useState } from "react";
 import { SafeAreaView, View, Text, TouchableWithoutFeedback, Keyboard } from "react-native";
 
 import useAuth from "../hooks/auth";
-import useApi from "../hooks/api";
 
 import ActivityIndicator from "../components/ActivityIndicator";
 import ErrorMessage from "../components/ErrorMessage";
-import { PhoneInput, PasswordInput, TextInput } from "../components/Inputs";
-import { Button, BackButton } from "../components/Button";
+import { TextInput } from "../components/Inputs";
+import { Button } from "../components/Button";
 
 import styles from "../styles";
 
 export default Login = ({ navigation }) => {
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
-
-  const { api, loading, error } = useApi();
-  const auth = useAuth();
-
-  let submitSignup = async () => {
-    const response = await api.users.register({ name, lastName }, auth.data.token);
-    if (!response.error) auth.logIn(auth.data.token);
-  };
+  const { submitRegister, loading, error } = useAuth();
 
   return (
     <>
@@ -30,7 +22,6 @@ export default Login = ({ navigation }) => {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={wrapper}>
             <View>
-              {/* <BackButton onPress={() => navigation.goBack()} /> */}
               <View style={{ height: 70 }} />
               <Text style={styles.title}>Регистрация</Text>
               <Text style={styles.subtitle}>Введите имя и фамилию для регистрации в приложении.</Text>
@@ -39,7 +30,7 @@ export default Login = ({ navigation }) => {
               <ErrorMessage error={error} />
             </View>
             <View>
-              <Button style={button} title="Зарегистрироваться" onPress={submitSignup} />
+              <Button style={button} title="Зарегистрироваться" onPress={() => submitRegister(name, lastName)} />
               <Text style={styles.agreement}>Нажимая на эту кнопку, я на всё подписываюсь и соглашаюсь со всем, с чем только можно.</Text>
             </View>
           </View>

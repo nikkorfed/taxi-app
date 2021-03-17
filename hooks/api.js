@@ -9,7 +9,7 @@ export default () => {
   const patched = {};
   Object.keys(api).map((key) => (patched[key] = {}));
 
-  const patch = (api) => async (...args) => {
+  let patch = (api) => async (...args) => {
     setError("");
     setLoading(true);
     const response = await api(...args).catch((error) => ({ error: error.response?.data.error || error.message }));
