@@ -5,8 +5,10 @@ import jwtDecode from "jwt-decode";
 import AuthContext from "../auth/context";
 import authStorage from "../auth/storage";
 
+import api from "../api";
+
 export default () => {
-  const { user, setUser } = useContext(AuthContext);
+  const { data, setData, user, setUser } = useContext(AuthContext);
 
   const logIn = (token) => {
     const user = token ? jwtDecode(token) : null;
@@ -20,11 +22,10 @@ export default () => {
     authStorage.removeToken();
   };
 
-  const getUser = async () => {
-    const token = await authStorage.getToken();
-    const user = token ? jwtDecode(token) : null;
-    if (user) setUser(user);
+  const me = async () => {
+    let result = await api.users.me().catch((error) => error.response.data);
+    console.log(result);
   };
 
-  return { user, logIn, logOut, getUser };
+  return { data, setData, logIn, logOut, me };
 };

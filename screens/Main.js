@@ -160,6 +160,7 @@ export default Main = () => {
       </View>
       <View style={styles.bottom}>
         {<Button title="Выйти" onPress={auth.logOut} />}
+        {<Button title="Обо мне" onPress={auth.me} />}
         {Boolean(from.point) && Boolean(to.point) && !route.length && (
           <Button title="Поехали" onPress={drawRoute} color={true} shadow={true} style={{ marginTop: 10, width: "100%" }} />
         )}

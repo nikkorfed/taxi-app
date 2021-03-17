@@ -6,23 +6,22 @@ import useApi from "../hooks/api";
 
 import ActivityIndicator from "../components/ActivityIndicator";
 import ErrorMessage from "../components/ErrorMessage";
-import { PhoneInput, PasswordInput, TextInput } from "../components/TextInput";
+import { CodeInput } from "../components/Inputs";
 import { Button, BackButton } from "../components/Button";
 
 import styles from "../styles";
 
 export default Login = ({ navigation }) => {
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [code, setCode] = useState("");
 
   const { api, loading, error } = useApi();
   const auth = useAuth();
 
-  let submitSignup = async () => {
-    const response = await api.users.register({ phone, password, name, lastName });
-    if (!response.error) auth.logIn(response.headers["x-auth-token"]);
+  let submitCode = async () => {
+    const response = await api.users.authConfirm({ phone: auth.data.phone, code });
+    if (response.error) return;
+    if (response.data.register) auth.setData({ ...auth.data, token: response.data.token }) && navigation.navigate("Register");
+    else auth.logIn(response.data.token);
   };
 
   return (
@@ -33,16 +32,13 @@ export default Login = ({ navigation }) => {
           <View style={wrapper}>
             <View>
               <BackButton onPress={() => navigation.goBack()} />
-              <Text style={styles.title}>Регистрация</Text>
-              <Text style={styles.subtitle}>Придумайте пароль, а также введите свои имя и фамилию.</Text>
-              <PhoneInput style={input} state={[phone, setPhone]} />
-              <PasswordInput style={input} state={[password, setPassword]} />
-              <TextInput style={input} state={[name, setName]} placeholder="Имя" />
-              <TextInput style={input} state={[lastName, setLastName]} placeholder="Фамилия" />
+              <Text style={styles.title}>Введите код</Text>
+              <Text style={styles.subtitle}>Чтобы продолжить, введите одноразовый 6-значный код, отправленный на ваш телефон.</Text>
+              <CodeInput style={input} state={[code, setCode]} />
               <ErrorMessage error={error} />
             </View>
             <View>
-              <Button style={button} title="Зарегистрироваться" onPress={submitSignup} />
+              <Button style={button} title="Далее" onPress={submitCode} />
               <Text style={styles.agreement}>Нажимая на эту кнопку, я на всё подписываюсь и соглашаюсь со всем, с чем только можно.</Text>
             </View>
           </View>

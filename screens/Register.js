@@ -1,35 +1,26 @@
 import React, { useState } from "react";
 import { SafeAreaView, View, Text, TouchableWithoutFeedback, Keyboard } from "react-native";
 
-import * as Notifications from "expo-notifications";
-import * as Permissions from "expo-permissions";
-
 import useAuth from "../hooks/auth";
 import useApi from "../hooks/api";
 
 import ActivityIndicator from "../components/ActivityIndicator";
 import ErrorMessage from "../components/ErrorMessage";
-import { PhoneInput, PasswordInput } from "../components/Inputs";
+import { PhoneInput, PasswordInput, TextInput } from "../components/Inputs";
 import { Button, BackButton } from "../components/Button";
 
 import styles from "../styles";
 
 export default Login = ({ navigation }) => {
-  const [phone, setPhone] = useState("");
+  const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   const { api, loading, error } = useApi();
   const auth = useAuth();
 
-  // Возможно, вынести этот код в хук
-  let submitLogin = async () => {
-    const permission = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-    if (!permission.granted) return;
-
-    const pushToken = await Notifications.getExpoPushTokenAsync().catch((error) => console.log("Ошибка при получении Push-токена:", error));
-    const response = await api.users.auth({ phone, pushToken: pushToken.data });
-    auth.setData({ phone });
-
-    if (!response.error) navigation.navigate("CodeEntry");
+  let submitSignup = async () => {
+    const response = await api.users.register({ name, lastName }, auth.data.token);
+    if (!response.error) auth.logIn(auth.data.token);
   };
 
   return (
@@ -39,14 +30,16 @@ export default Login = ({ navigation }) => {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={wrapper}>
             <View>
-              <BackButton onPress={() => navigation.goBack()} />
-              <Text style={styles.title}>Вход</Text>
-              <Text style={styles.subtitle}>Введите свой телефон, чтобы начать пользоваться приложением.</Text>
-              <PhoneInput style={input} state={[phone, setPhone]} />
+              {/* <BackButton onPress={() => navigation.goBack()} /> */}
+              <View style={{ height: 70 }} />
+              <Text style={styles.title}>Регистрация</Text>
+              <Text style={styles.subtitle}>Введите имя и фамилию для регистрации в приложении.</Text>
+              <TextInput style={input} state={[name, setName]} placeholder="Имя" />
+              <TextInput style={input} state={[lastName, setLastName]} placeholder="Фамилия" />
               <ErrorMessage error={error} />
             </View>
             <View>
-              <Button style={button} title="Далее" onPress={submitLogin} />
+              <Button style={button} title="Зарегистрироваться" onPress={submitSignup} />
               <Text style={styles.agreement}>Нажимая на эту кнопку, я на всё подписываюсь и соглашаюсь со всем, с чем только можно.</Text>
             </View>
           </View>

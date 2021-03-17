@@ -13,11 +13,7 @@ const storeToken = async (token) => {
 };
 
 const getToken = async () => {
-  try {
-    return await AsyncStorage.getItem(key);
-  } catch (error) {
-    console.log("Произошла ошибка при получении токена для авторизации", error);
-  }
+  return await AsyncStorage.getItem(key).catch((error) => null);
 };
 
 const getUser = async () => {
@@ -33,4 +29,4 @@ const removeToken = async () => {
   }
 };
 
-export default { storeToken, getUser, removeToken };
+export default { storeToken, getToken, getUser, removeToken };

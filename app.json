@@ -14,6 +14,7 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
+    "notification": { "iosDisplayInForeground": true },
     "ios": {
       "supportsTablet": true
     },

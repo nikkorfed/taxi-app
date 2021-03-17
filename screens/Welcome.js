@@ -14,10 +14,9 @@ export default Welcome = ({ navigation }) => {
           <FontAwesome5 name="taxi" size={40} color="dodgerblue" />
         </View>
         <Text style={styles.title}>Такси</Text>
-        <Text style={subtitle}>Добро пожаловать! Войдите или зарегистрируйтесь, чтобы начать пользоваться приложением.</Text>
+        <Text style={subtitle}>Добро пожаловать! Войдите, чтобы начать пользоваться приложением.</Text>
         <View style={styles.bottomButtons}>
-          <Button style={loginButton} title="Вход" onPress={() => navigation.navigate("Login")} />
-          <SimpleButton style={signupButton} title="Регистрация" onPress={() => navigation.navigate("Signup")} />
+          <Button style={loginButton} title="Войти" onPress={() => navigation.navigate("Login")} />
         </View>
       </View>
     </SafeAreaView>
