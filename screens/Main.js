@@ -2,7 +2,6 @@ import fetch from "node-fetch";
 import React, { useState, useEffect, useRef } from "react";
 import { StyleSheet, SafeAreaView, View, Text, TextInput, TouchableHighlight } from "react-native";
 
-import { StatusBar } from "expo-status-bar";
 import { AntDesign } from "@expo/vector-icons";
 import MapView, { UrlTile, Marker, Polyline, PROVIDER_GOOGLE } from "react-native-maps";
 
@@ -103,7 +102,6 @@ export default Main = ({ navigation }) => {
 
   return (
     <>
-      <StatusBar style="auto" />
       <MapView
         provider={PROVIDER_GOOGLE}
         mapType="none"
@@ -160,6 +158,7 @@ export default Main = ({ navigation }) => {
       </View>
       <View style={styles.bottom}>
         {<Button title="Выйти" onPress={auth.logout} />}
+        {<Button title="Меню" onPress={navigation.openDrawer} />}
         {Boolean(from.point) && Boolean(to.point) && !route.length && (
           <Button title="Поехали" onPress={drawRoute} color={true} shadow={true} style={{ marginTop: 10, width: "100%" }} />
         )}
