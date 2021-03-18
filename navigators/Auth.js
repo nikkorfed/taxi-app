@@ -13,7 +13,7 @@ export default AuthNavigator = () => {
       <Stack.Screen name="Welcome" component={Welcome} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="CodeEntry" component={CodeEntry} />
-      <Stack.Screen name="Register" component={Register} />
+      <Stack.Screen name="Register" component={Register} options={{ gestureEnabled: false }} />
     </Stack.Navigator>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView, View, Text, TouchableWithoutFeedback, Keyboard } from "react-native";
 
 import useAuth from "../hooks/auth";
@@ -14,6 +14,8 @@ export default Login = ({ navigation }) => {
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const { submitRegister, loading, error } = useAuth();
+
+  useEffect(() => navigation.addListener("beforeRemove", (e) => e.preventDefault()), []);
 
   return (
     <>

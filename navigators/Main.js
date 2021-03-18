@@ -1,13 +1,13 @@
 import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import Main from "../screens/Main";
 
 export default AuthNavigator = () => {
-  const Tab = createBottomTabNavigator();
+  const Drawer = createDrawerNavigator();
   return (
-    <Tab.Navigator screenOptions={{}}>
-      <Tab.Screen name="Main" component={Main} />
-    </Tab.Navigator>
+    <Drawer.Navigator screenOptions={{}}>
+      <Drawer.Screen name="Main" component={Main} />
+    </Drawer.Navigator>
   );
 };
