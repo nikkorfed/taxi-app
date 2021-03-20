@@ -3,7 +3,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import Main from "../screens/Main";
 
-export default AuthNavigator = () => {
+export default MainNavigator = () => {
   const Drawer = createDrawerNavigator();
   return (
     <Drawer.Navigator screenOptions={{}}>
