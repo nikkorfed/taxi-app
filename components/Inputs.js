@@ -6,13 +6,13 @@ import { TextInputMask } from "react-native-masked-text";
 import styles from "../styles";
 
 export let TextInput = ({ style, state: [text, setText], ...props }) => {
-  props.style = { ...styles.input, ...style };
+  props.style = [styles.input, style];
 
   return <Input value={text} onChangeText={setText} {...props} />;
 };
 
 export let PhoneInput = ({ style, state: [phone, setPhone], ...props }) => {
-  props.style = { ...styles.input, ...style };
+  props.style = [styles.input, style];
   props.type = "custom";
   props.options = { mask: "+7 999 999-99-99" };
   props.keyboardType = "number-pad";
@@ -30,7 +30,7 @@ export let PhoneInput = ({ style, state: [phone, setPhone], ...props }) => {
 };
 
 export let PasswordInput = ({ style, state: [password, setPassword], ...props }) => {
-  props.style = { ...styles.input, ...style };
+  props.style = [styles.input, style];
   props.secureTextEntry = true;
   props.placeholder = "Пароль";
 
@@ -38,7 +38,7 @@ export let PasswordInput = ({ style, state: [password, setPassword], ...props })
 };
 
 export let CodeInput = ({ style, state: [code, setCode], ...props }) => {
-  props.style = { ...styles.input, ...style };
+  props.style = [styles.input, style];
   props.keyboardType = "number-pad";
   props.placeholder = "Одноразовый код";
 

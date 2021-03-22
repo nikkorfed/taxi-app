@@ -7,6 +7,6 @@ export default styles = StyleSheet.create({
   },
   wrapper: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
   },
 });

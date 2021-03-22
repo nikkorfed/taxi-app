@@ -12,7 +12,9 @@ export default Bottom = ({ view, overlay, gestureHandler, children }) => {
       <Animated.View style={[screen.overlay, overlay]} />
       <PanGestureHandler onGestureEvent={gestureHandler}>
         <Animated.View style={[screen.view, view]}>
-          <View style={screen.bar} />
+          <View style={screen.barArea}>
+            <View style={screen.bar} />
+          </View>
           {children}
         </Animated.View>
       </PanGestureHandler>
@@ -26,8 +28,6 @@ const screen = StyleSheet.create({
     position: "absolute",
     top: "100%",
     bottom: 0,
-    justifyContent: "center",
-    alignItems: "center",
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     width: "100%",
@@ -36,12 +36,16 @@ const screen = StyleSheet.create({
     shadowRadius: 20,
     shadowOpacity: 0.15,
   },
+  barArea: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: 20,
+    width: "100%",
+  },
   bar: {
-    position: "absolute",
-    top: 10,
     borderRadius: 5,
-    height: 5,
-    width: 40,
+    height: 4,
+    width: 30,
     backgroundColor: "lightgrey",
   },
 });

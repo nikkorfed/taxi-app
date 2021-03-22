@@ -1,7 +1,8 @@
 import React, { useState, useRef } from "react";
-import { StyleSheet, SafeAreaView, View, Text, TextInput, TouchableHighlight } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { getStatusBarHeight } from "react-native-status-bar-height";
 
-import { AntDesign } from "@expo/vector-icons";
+import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 
 import useAuth from "../hooks/auth";
 import useMap from "../hooks/map";
@@ -10,6 +11,7 @@ import useBottom from "../hooks/bottom";
 import MapView from "../components/MapView";
 import { Button } from "../components/Button";
 import Bottom from "../components/Bottom";
+import { TextInput } from "../components/Inputs";
 
 import styles from "../styles";
 
@@ -21,53 +23,8 @@ export default Main = ({ navigation }) => {
   return (
     <>
       <MapView route={route} map={map} />
-      <View style={screen.top}>
-        <View style={screen.inputs}>
-          <TextInput
-            style={screen.inputFrom}
-            placeholder="Откуда"
-            value={from.value.full_name}
-            onChangeText={from.set}
-            onSubmitEditing={from.getOptions}
-          />
-          {Boolean(from.value.full_name) && (
-            <TouchableHighlight style={screen.cross} onPress={from.reset} underlayColor="#eee" activeOpacity={0.9}>
-              <AntDesign name="close" size={20} color="lightgrey" />
-            </TouchableHighlight>
-          )}
-          <TextInput
-            style={screen.input}
-            placeholder="Куда"
-            value={to.value.full_name}
-            onChangeText={to.set}
-            onSubmitEditing={to.getOptions}
-          />
-          {Boolean(to.value.full_name) && (
-            <TouchableHighlight style={{ ...screen.cross, top: 45 }} onPress={to.reset} underlayColor="#eee" activeOpacity={0.9}>
-              <AntDesign name="close" size={20} color="lightgrey" />
-            </TouchableHighlight>
-          )}
-        </View>
-        <View style={screen.options}>
-          {options.value.map((option, i) => (
-            <TouchableHighlight
-              key={option.name}
-              onPress={() => options.choose(option)}
-              style={i == options.value.length - 1 ? screen.lastOption : screen.option}
-              underlayColor="#eee"
-              activeOpacity={0.9}
-            >
-              <Text>{option.full_name}</Text>
-            </TouchableHighlight>
-          ))}
-        </View>
-      </View>
       <View style={screen.bottom}>
-        <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
-          {<Button title="Выйти" onPress={auth.logout} />}
-          {<Button title="Меню" onPress={navigation.openDrawer} />}
-          {<Button title="Окно" onPress={bottom.open} />}
-        </View>
+        {<Button title="Выйти" onPress={auth.logout} />}
         {Boolean(from.value.point) && Boolean(to.value.point) && !route.length && (
           <Button title="Поехали" onPress={drawRoute} color={true} shadow={true} style={{ marginTop: 10, width: "100%" }} />
         )}
@@ -80,20 +37,35 @@ export default Main = ({ navigation }) => {
           </>
         )}
       </View>
+      <TouchableOpacity style={screen.menuButton} onPress={navigation.openDrawer} activeOpacity={0.8}>
+        <MaterialIcons name="menu" size={20} color="#333" />
+      </TouchableOpacity>
+      <View style={screen.destination}>
+        <TouchableOpacity style={screen.destinationInput} onPress={bottom.open} activeOpacity={0.8}>
+          <Text style={screen.destinationText}>Куда поедем?</Text>
+          <AntDesign name="arrowright" size={20} color="#333" />
+        </TouchableOpacity>
+      </View>
       <Bottom {...bottom}>
-        <Text style={styles.subtitle}>Всплывающее окошко снизу!</Text>
+        <View style={styles.wrapper}>
+          <View style={screen.inputs}>
+            <TextInput
+              state={[from.value.text, from.set]}
+              style={{ borderBottomWidth: 1, borderBottomColor: "#eee", borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}
+              placeholder="Откуда"
+            />
+            <TextInput state={[to.value.text, to.set]} style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }} placeholder="Куда" />
+            <View style={{ justifyContent: "center", alignItems: "center", height: 400 }}>
+              <Text style={styles.subtitle}>Здесь будет история предыдущих поисков или поездок...</Text>
+            </View>
+          </View>
+        </View>
       </Bottom>
     </>
   );
 };
 
 const screen = StyleSheet.create({
-  top: {
-    position: "absolute",
-    top: 30,
-    left: 20,
-    right: 20,
-  },
   bottom: {
     display: "flex",
     flexDirection: "row",
@@ -101,65 +73,46 @@ const screen = StyleSheet.create({
     position: "absolute",
     left: 20,
     right: 20,
-    bottom: 20,
+    bottom: 80,
+  },
+  menuButton: {
+    position: "absolute",
+    top: getStatusBarHeight() + 10,
+    left: 15,
+    borderRadius: 10,
+    padding: 10,
+    backgroundColor: "white",
+    shadowColor: "black",
+    shadowRadius: 15,
+    shadowOpacity: 0.15,
+  },
+  destination: {
+    position: "absolute",
+    bottom: 0,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    padding: 15,
+    width: "100%",
+    backgroundColor: "white",
+    shadowColor: "black",
+    shadowRadius: 15,
+    shadowOpacity: 0.15,
+  },
+  destinationInput: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    backgroundColor: "#f5f5f5",
+  },
+  destinationText: {
+    fontFamily: "Rubik_500Medium",
+    fontSize: 15,
+    color: "#333",
   },
   inputs: {
-    position: "absolute",
-    zIndex: 2,
-    marginBottom: 5,
     borderRadius: 10,
-    width: "100%",
-    backgroundColor: "white",
-    shadowColor: "black",
-    shadowRadius: 10,
-    shadowOpacity: 0.15,
-  },
-  input: {
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    height: 45,
-    width: "100%",
-    fontSize: 16,
-  },
-  cross: {
-    justifyContent: "center",
-    alignItems: "center",
-    position: "absolute",
-    top: 0,
-    right: 0,
-    borderTopRightRadius: 10,
-    borderBottomRightRadius: 10,
-    height: 45,
-    width: 50,
-  },
-  options: {
-    borderRadius: 10,
-    paddingTop: 90,
-    backgroundColor: "white",
-    shadowColor: "black",
-    shadowRadius: 10,
-    shadowOpacity: 0.15,
-  },
-  option: {
-    borderBottomWidth: 1,
-    borderBottomColor: "#eee",
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-  },
-  lastOption: {
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-  },
-  tick: {
-    justifyContent: "center",
-    alignItems: "center",
-    position: "absolute",
-    top: 0,
-    right: 0,
-    bottom: 0,
-    width: 50,
   },
 });
 screen.inputFrom = { ...screen.input, borderBottomWidth: 1, borderBottomColor: "#eee" };
