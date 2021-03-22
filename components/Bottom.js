@@ -6,20 +6,25 @@ import { PanGestureHandler } from "react-native-gesture-handler";
 
 import styles from "../styles";
 
-export default Bottom = ({ style, gestureHandler, children }) => {
+export default Bottom = ({ view, overlay, gestureHandler, children }) => {
   return (
-    <PanGestureHandler onGestureEvent={gestureHandler}>
-      <Animated.View style={[screen.view, style]}>
-        <View style={screen.bar} />
-        {children}
-      </Animated.View>
-    </PanGestureHandler>
+    <>
+      <Animated.View style={[screen.overlay, overlay]} />
+      <PanGestureHandler onGestureEvent={gestureHandler}>
+        <Animated.View style={[screen.view, view]}>
+          <View style={screen.bar} />
+          {children}
+        </Animated.View>
+      </PanGestureHandler>
+    </>
   );
 };
 
 const screen = StyleSheet.create({
+  overlay: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "black" },
   view: {
     position: "absolute",
+    top: "100%",
     bottom: 0,
     justifyContent: "center",
     alignItems: "center",
