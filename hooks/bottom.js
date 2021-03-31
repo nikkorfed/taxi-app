@@ -25,8 +25,8 @@ export default () => {
 
   const gestureHandler = useAnimatedGestureHandler({
     onStart: (_, ctx) => (ctx.start = pos.value),
-    onActive: (event, ctx) => (pos.value = ctx.start + event.translationY),
-    onEnd: (event, _) => (event.absoluteY > window.height / 2 - 50 ? close() : open()),
+    onActive: (event, ctx) => (pos.value = ctx.start + event.translationY < start ? start : ctx.start + event.translationY),
+    onEnd: (event, _) => (pos.value > 150 ? close() : open()),
   });
 
   return { open, close, view, overlay, gestureHandler };
