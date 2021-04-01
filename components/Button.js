@@ -12,8 +12,9 @@ export let BackButton = ({ style, ...props }) => (
 );
 
 export let Button = ({ style, title, ...props }) => {
-  let color = style.reduce((_, style) => style?.color || _, undefined);
+  let color = Array.isArray(style) ? style.reduce((_, style) => style?.color || _, undefined) : style?.color;
   let textStyle = color ? { color } : { color: "dodgerblue" };
+
   return (
     <TouchableOpacity style={[styles.button, style]} activeOpacity={0.8} {...props}>
       <Text style={[styles.buttonText, textStyle]}>{title}</Text>
@@ -22,7 +23,7 @@ export let Button = ({ style, title, ...props }) => {
 };
 
 export let SimpleButton = ({ style, title, ...props }) => {
-  let color = style.reduce((_, style) => style?.color || _, undefined);
+  let color = Array.isArray(style) ? style.reduce((_, style) => style?.color || _, undefined) : style?.color;
   let textStyle = color ? { color } : { color: "dodgerblue" };
   return (
     <TouchableOpacity style={[styles.button, styles.simpleButton, style]} activeOpacity={0.8} {...props}>
