@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { ScrollView, View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 
 import { MaterialIcons, AntDesign } from "@expo/vector-icons";
@@ -46,18 +46,23 @@ export default Main = ({ navigation }) => {
       </View>
       <Bottom {...bottom}>
         <View style={screen.inputs}>
-          <TextInput state={[from.value, from.set]} style={screen.inputFrom} placeholder="Откуда" onSubmitEditing={from.getOptions} />
-          <TextInput state={[to.value, to.set]} style={screen.inputTo} placeholder="Куда" />
+          <TextInput
+            state={[from.value, from.set]}
+            style={screen.inputFrom}
+            placeholder="Откуда"
+            onSubmitEditing={() => options.get("from")}
+          />
+          <TextInput state={[to.value, to.set]} style={screen.inputTo} placeholder="Куда" onSubmitEditing={() => options.get("to")} />
         </View>
-        <View style={screen.options}>
+        <ScrollView style={screen.options}>
           {options.value.length > 0 &&
             options.value.map((option, index) => (
-              <View key={index} style={screen.option}>
-                <Text style={screen.optionName}>{option.name}</Text>
+              <TouchableOpacity key={index} style={screen.option} onPress={() => options.choose(option)}>
+                <Text style={screen.optionText}>{option.text}</Text>
                 <Text style={screen.optionDescription}>{option.description}</Text>
-              </View>
+              </TouchableOpacity>
             ))}
-        </View>
+        </ScrollView>
       </Bottom>
     </>
   );
@@ -110,6 +115,8 @@ const screen = StyleSheet.create({
     color: "#333",
   },
   inputs: {
+    borderBottomWidth: 1,
+    borderColor: "whitesmoke",
     paddingHorizontal: 15,
     paddingBottom: 10,
   },
@@ -125,12 +132,11 @@ const screen = StyleSheet.create({
   },
   options: {
     flex: 1,
-    paddingTop: 10,
     backgroundColor: "whitesmoke",
   },
   option: {
     borderBottomWidth: 1,
-    borderColor: "#eee",
+    borderColor: "whitesmoke",
     paddingVertical: 10,
     paddingHorizontal: 15,
     backgroundColor: "white",

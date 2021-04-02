@@ -5,8 +5,8 @@ import { parseRoute } from "../utils/route";
 import sleep from "../utils/sleep";
 
 export default () => {
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
+  const [from, setFrom] = useState({ text: "" });
+  const [to, setTo] = useState({ text: "" });
   const [options, setOptions] = useState([]);
   const [route, setRoute] = useState([]);
 
@@ -15,7 +15,11 @@ export default () => {
   let toLocation = (target) => map.current.animateCamera({ center: target, zoom: 16 }, { duration: 300 });
   let toCurrentLocation = () => navigator.geolocation.getCurrentPosition(({ coords }) => toLocation(coords));
 
-  let getOptions = async (input) => {
+  let editFrom = (text) => setFrom({ text });
+  let editTo = (text) => setTo({ text });
+
+  let getOptions = async (type) => {
+    let input = (type == "from" && from.text) || (type == "to" && to.text);
     if (!input) return;
 
     // let key = 'ruslnb3529'; // 2ГИС
@@ -24,34 +28,23 @@ export default () => {
     let key = "031c2f64-8f4f-4071-832a-efca359c078f"; // Яндекс
     let response = await axios.get(`https://geocode-maps.yandex.ru/1.x/?format=json&apikey=${key}&geocode=${input}`);
 
-    return response.data;
-  };
-
-  let getOptionsFrom = async () => {
-    let data = await getOptions(from);
-
     // let options = data.result.items; // 2ГИС
 
-    let options = data.response.GeoObjectCollection.featureMember; // Яндекс
+    let options = response.data.response.GeoObjectCollection.featureMember; // Яндекс
     options = options.map(({ GeoObject }) => ({
-      name: GeoObject.name,
+      type,
+      text: GeoObject.name,
       description: GeoObject.description,
       longitude: GeoObject.Point.pos.split(" ")[0],
       latitude: GeoObject.Point.pos.split(" ")[1],
     }));
-    setOptions(options);
-  };
 
-  let getOptionsTo = async (input) => {
-    let data = await getOptions(input);
-    let options = data.result.items;
-    options.map((option, index) => (options[index].optionType = "to"));
     setOptions(options);
   };
 
   let chooseOption = (option) => {
-    if (option.optionType == "from") setFrom(option);
-    else if (option.optionType == "to") setTo(option);
+    if (option.type == "from") setFrom(option);
+    else if (option.type == "to") setTo(option);
     setOptions([]);
   };
 
@@ -95,9 +88,9 @@ export default () => {
 
   return {
     map,
-    from: { value: from, set: setFrom, getOptions: getOptionsFrom, reset: resetFrom },
-    to: { value: to, set: setTo, getOptions: getOptionsTo, reset: resetTo },
-    options: { value: options, choose: chooseOption },
+    from: { value: from.text, set: editFrom, reset: resetFrom },
+    to: { value: to.text, set: editTo, reset: resetTo },
+    options: { value: options, get: getOptions, choose: chooseOption },
     route: { value: route, draw: drawRoute, animate: animateRoute },
     toLocation,
   };
