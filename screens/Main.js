@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 
@@ -16,7 +16,6 @@ import { TextInput } from "../components/Inputs";
 import styles from "../styles";
 
 export default Main = ({ navigation }) => {
-  const auth = useAuth();
   const { map, from, to, options, route, toLocation } = useMap();
   const bottom = useBottom();
 
@@ -24,7 +23,6 @@ export default Main = ({ navigation }) => {
     <>
       <MapView route={route} map={map} />
       <View style={screen.bottom}>
-        {<Button title="Выйти" onPress={auth.logout} />}
         {Boolean(from.value.point) && Boolean(to.value.point) && !route.length && (
           <Button title="Поехали" onPress={drawRoute} color={true} shadow={true} style={{ marginTop: 10, width: "100%" }} />
         )}
@@ -47,18 +45,18 @@ export default Main = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       <Bottom {...bottom}>
-        <View style={styles.wrapper}>
-          <View style={screen.inputs}>
-            <TextInput
-              state={[from.value.text, from.set]}
-              style={{ borderBottomWidth: 1, borderBottomColor: "#eee", borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}
-              placeholder="Откуда"
-            />
-            <TextInput state={[to.value.text, to.set]} style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }} placeholder="Куда" />
-            <View style={{ justifyContent: "center", alignItems: "center", height: 400 }}>
-              <Text style={styles.subtitle}>Здесь будет история предыдущих поисков или поездок...</Text>
-            </View>
-          </View>
+        <View style={screen.inputs}>
+          <TextInput state={[from.value, from.set]} style={screen.inputFrom} placeholder="Откуда" onSubmitEditing={from.getOptions} />
+          <TextInput state={[to.value, to.set]} style={screen.inputTo} placeholder="Куда" />
+        </View>
+        <View style={screen.options}>
+          {options.value.length > 0 &&
+            options.value.map((option, index) => (
+              <View key={index} style={screen.option}>
+                <Text style={screen.optionName}>{option.name}</Text>
+                <Text style={screen.optionDescription}>{option.description}</Text>
+              </View>
+            ))}
         </View>
       </Bottom>
     </>
@@ -112,7 +110,32 @@ const screen = StyleSheet.create({
     color: "#333",
   },
   inputs: {
-    borderRadius: 10,
+    paddingHorizontal: 15,
+    paddingBottom: 10,
+  },
+  inputFrom: {
+    borderBottomWidth: 1,
+    borderColor: "#eee",
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+  },
+  inputTo: {
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
+  },
+  options: {
+    flex: 1,
+    paddingTop: 10,
+    backgroundColor: "whitesmoke",
+  },
+  option: {
+    borderBottomWidth: 1,
+    borderColor: "#eee",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    backgroundColor: "white",
+  },
+  optionDescription: {
+    color: "#888",
   },
 });
-screen.inputFrom = { ...screen.input, borderBottomWidth: 1, borderBottomColor: "#eee" };
