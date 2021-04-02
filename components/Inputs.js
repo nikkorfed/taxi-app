@@ -5,10 +5,15 @@ import { TextInputMask } from "react-native-masked-text";
 
 import styles from "../styles";
 
-export let TextInput = ({ style, state: [text, setText], ...props }) => {
+export let TextInput = ({ style, state, ...props }) => {
+  let value, set;
+
+  if (Array.isArray(state)) [value, set] = state;
+  else ({ value, set } = state);
+
   props.style = [styles.input, style];
 
-  return <Input value={text} onChangeText={setText} {...props} />;
+  return <Input value={value} onChangeText={set} {...props} />;
 };
 
 export let PhoneInput = ({ style, state: [phone, setPhone], ...props }) => {
