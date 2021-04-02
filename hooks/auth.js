@@ -11,10 +11,10 @@ import authStorage from "../auth/storage";
 
 import useApi from "./api";
 
-export default () => {
+export default (nav) => {
   const { data, setData, user, setUser } = useContext(AuthContext);
   const { api, loading, error } = useApi();
-  const navigation = useNavigation();
+  const navigation = nav || useNavigation();
 
   let submitLogin = async (phone) => {
     const permission = await Permissions.askAsync(Permissions.NOTIFICATIONS);
