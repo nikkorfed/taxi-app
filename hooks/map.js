@@ -49,19 +49,26 @@ export default () => {
   };
 
   let drawRoute = async () => {
-    const body = {
-      locale: "ru",
-      points: [
-        { type: "pedo", x: from.point.lon, y: from.point.lat },
-        { type: "pedo", x: to.point.lon, y: to.point.lat },
-      ],
-      type: "jam",
-    };
-    const response = await axios.post(`https://catalog.api.2gis.com/carrouting/6.0.0/global?key=ruslnb3529`, body);
-    let points = parseRoute(response.data);
+    // const body = { // 2ГИС
+    //   locale: "ru",
+    //   points: [
+    //     { type: "pedo", x: from.longitude, y: from.latitude },
+    //     { type: "pedo", x: to.longitude, y: to.latitude },
+    //   ],
+    //   type: "jam",
+    // };
+    // const response = await axios.post(`https://catalog.api.2gis.com/carrouting/6.0.0/global?key=ruslnb3529`, body);
+    // let points = parseRoute(response.data);
+
+    const points = `${from.longitude},${from.latitude};${to.longitude},${to.latitude}`; // Mapbox
+    const token = "access_token=pk.eyJ1Ijoibmlra29yZmVkIiwiYSI6ImNrbjBiajIwdjBqM2sycHF1b21kN3I4YngifQ.pz5g_r1WtmssKIohqfj9VQ";
+    const response = await axios.get(`https://api.mapbox.com/directions/v5/mapbox/driving/${points}?${token}&geometries=geojson`);
+
+    let route = response.data.routes[0].geometry.coordinates.map((point) => ({ longitude: point[0], latitude: point[1] }));
+
     setOptions([]);
-    setRoute(points);
-    map.current.fitToCoordinates(points ? points : route, { edgePadding: { top: 100, left: 20, right: 20, bottom: 0 }, animated: true });
+    setRoute(route);
+    map.current.fitToCoordinates(route, { edgePadding: { top: 100, left: 15, right: 15, bottom: 150 }, animated: true });
   };
 
   let animateRoute = async () => {
@@ -85,6 +92,10 @@ export default () => {
   };
 
   useEffect(toCurrentLocation, []);
+  useEffect(() => {
+    if (!from.longitude || !from.latitude || !to.longitude || !to.latitude) return;
+    drawRoute();
+  }, [from, to]);
 
   return {
     map,

@@ -19,9 +19,13 @@ export default Main = ({ navigation }) => {
   const { map, from, to, options, route, toLocation } = useMap();
   const bottom = useBottom();
 
+  useEffect(() => {
+    route.value.length && bottom.close();
+  }, [route.value]);
+
   return (
     <>
-      <MapView route={route} map={map} />
+      <MapView route={route.value} map={map} />
       <View style={screen.bottom}>
         {Boolean(from.value.point) && Boolean(to.value.point) && !route.length && (
           <Button title="Поехали" onPress={drawRoute} color={true} shadow={true} style={{ marginTop: 10, width: "100%" }} />
@@ -46,13 +50,8 @@ export default Main = ({ navigation }) => {
       </View>
       <Bottom {...bottom}>
         <View style={screen.inputs}>
-          <TextInput
-            state={[from.value, from.set]}
-            style={screen.inputFrom}
-            placeholder="Откуда"
-            onSubmitEditing={() => options.get("from")}
-          />
-          <TextInput state={[to.value, to.set]} style={screen.inputTo} placeholder="Куда" onSubmitEditing={() => options.get("to")} />
+          <TextInput state={from} style={screen.inputFrom} placeholder="Откуда" onSubmitEditing={() => options.get("from")} />
+          <TextInput state={to} style={screen.inputTo} placeholder="Куда" onSubmitEditing={() => options.get("to")} />
         </View>
         <ScrollView style={screen.options}>
           {options.value.length > 0 &&
@@ -115,10 +114,9 @@ const screen = StyleSheet.create({
     color: "#333",
   },
   inputs: {
-    borderBottomWidth: 1,
-    borderColor: "whitesmoke",
+    overflow: "hidden",
+    borderRadius: 10,
     paddingHorizontal: 15,
-    paddingBottom: 10,
   },
   inputFrom: {
     borderBottomWidth: 1,
@@ -132,14 +130,18 @@ const screen = StyleSheet.create({
   },
   options: {
     flex: 1,
-    backgroundColor: "whitesmoke",
+    paddingHorizontal: 15,
+    // backgroundColor: "whitesmoke",
   },
   option: {
     borderBottomWidth: 1,
     borderColor: "whitesmoke",
     paddingVertical: 10,
-    paddingHorizontal: 15,
-    backgroundColor: "white",
+    // backgroundColor: "white",
+  },
+  optionText: {
+    marginTop: 5,
+    fontFamily: "Rubik_500Medium",
   },
   optionDescription: {
     color: "#888",
