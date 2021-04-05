@@ -1,12 +1,14 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
 import Animated from "react-native-reanimated";
 import { PanGestureHandler } from "react-native-gesture-handler";
 
+import { AntDesign } from "@expo/vector-icons";
+
 import styles from "../styles";
 
-export default Bottom = ({ view, overlay, gestureHandler, children }) => {
+export default Bottom = ({ view, overlay, gestureHandler, children, close }) => {
   return (
     <>
       <Animated.View style={[screen.overlay, overlay]} />
@@ -14,6 +16,12 @@ export default Bottom = ({ view, overlay, gestureHandler, children }) => {
         <Animated.View style={[screen.view, view]}>
           <View style={screen.barArea}>
             <View style={screen.bar} />
+          </View>
+          <View style={screen.header}>
+            <Text style={styles.h2}>Постройте маршрут</Text>
+            <TouchableOpacity onPress={close}>
+              <AntDesign name="closecircle" size={26} color="#eee" />
+            </TouchableOpacity>
           </View>
           {children}
         </Animated.View>
@@ -39,7 +47,7 @@ const screen = StyleSheet.create({
   barArea: {
     justifyContent: "center",
     alignItems: "center",
-    height: 20,
+    height: 25,
     width: "100%",
   },
   bar: {
@@ -48,4 +56,5 @@ const screen = StyleSheet.create({
     width: 30,
     backgroundColor: "lightgrey",
   },
+  header: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 10, paddingHorizontal: 15 },
 });
