@@ -131,13 +131,11 @@ const screen = StyleSheet.create({
   options: {
     flex: 1,
     paddingHorizontal: 15,
-    // backgroundColor: "whitesmoke",
   },
   option: {
     borderBottomWidth: 1,
     borderColor: "whitesmoke",
     paddingVertical: 10,
-    // backgroundColor: "white",
   },
   optionText: {
     marginTop: 5,
