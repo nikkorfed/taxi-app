@@ -1,29 +1,41 @@
 import React from "react";
-import { TextInput as Input, Keyboard } from "react-native";
+import { View, TextInput as Input, TouchableOpacity, Keyboard } from "react-native";
 
 import { TextInputMask } from "react-native-masked-text";
+import { AntDesign } from "@expo/vector-icons";
 
 import styles from "../styles";
 
 let getState = (state) => {
-  let value, set;
+  let value, set, reset;
 
-  if (Array.isArray(state)) [value, set] = state;
-  else ({ value, set } = state);
+  if (Array.isArray(state)) [value, set, reset] = state;
+  else ({ value, set, reset } = state);
 
-  return [value, set];
+  let resetable = Boolean(value && reset);
+
+  return { value, set, reset, resetable };
 };
 
 export let TextInput = ({ style, state, ...props }) => {
-  let [value, set] = getState(state);
+  let { value, set, reset, resetable } = getState(state);
 
   props.style = [styles.input, style];
 
-  return <Input value={value} onChangeText={set} {...props} />;
+  return (
+    <View>
+      <Input value={value} onChangeText={set} {...props} />
+      {resetable && (
+        <TouchableOpacity style={styles.inputReset} onPress={reset}>
+          <AntDesign name="close" size={20} color="#ccc" />
+        </TouchableOpacity>
+      )}
+    </View>
+  );
 };
 
 export let PhoneInput = ({ style, state, ...props }) => {
-  let [value, set] = getState(state);
+  let [value, set, reset, resetable] = getState(state);
 
   props.style = [styles.input, style];
   props.type = "custom";
@@ -38,7 +50,16 @@ export let PhoneInput = ({ style, state, ...props }) => {
 
   props.onFocus = () => phone == "" && editPhone("");
 
-  return <TextInputMask value={value} onChangeText={editPhone} {...props} />;
+  return (
+    <View>
+      <TextInputMask value={value} onChangeText={editPhone} {...props} />
+      {resetable && (
+        <TouchableOpacity style={styles.inputReset} onPress={reset}>
+          <AntDesign name="close" size={20} color="#ccc" />
+        </TouchableOpacity>
+      )}
+    </View>
+  );
 };
 
 export let PasswordInput = ({ style, state, ...props }) => {

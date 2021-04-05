@@ -80,13 +80,13 @@ export default () => {
   };
 
   let resetFrom = () => {
-    setFrom("");
+    setFrom({ text: "" });
     setOptions([]);
     setRoute([]);
   };
 
   let resetTo = () => {
-    setTo("");
+    setTo({ text: "" });
     setOptions([]);
     setRoute([]);
   };
