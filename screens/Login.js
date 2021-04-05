@@ -22,7 +22,7 @@ export default Login = ({ navigation }) => {
           <View style={wrapper}>
             <View>
               <BackButton onPress={() => navigation.goBack()} />
-              <Text style={styles.title}>Вход</Text>
+              <Text style={styles.h1}>Вход</Text>
               <Text style={styles.subtitle}>Введите свой телефон, чтобы начать пользоваться приложением.</Text>
               <PhoneInput style={input} state={[phone, setPhone]} />
               <ErrorMessage error={error} />

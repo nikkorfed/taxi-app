@@ -1,11 +1,14 @@
 import { StyleSheet } from "react-native";
 
 export default styles = StyleSheet.create({
-  title: {
+  h1: {
     marginBottom: 10,
     fontFamily: "Rubik_700Bold",
     fontSize: 30,
-    fontWeight: "bold",
+  },
+  h2: {
+    fontFamily: "Rubik_500Medium",
+    fontSize: 20,
   },
   subtitle: {
     marginBottom: 15,

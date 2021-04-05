@@ -13,7 +13,7 @@ export default Welcome = ({ navigation }) => {
         <View style={icon}>
           <FontAwesome5 name="taxi" size={40} color="dodgerblue" />
         </View>
-        <Text style={styles.title}>Такси</Text>
+        <Text style={styles.h1}>Такси</Text>
         <Text style={subtitle}>Добро пожаловать! Войдите, чтобы начать пользоваться приложением.</Text>
         <View style={styles.bottomButtons}>
           <Button style={loginButton} title="Войти" onPress={() => navigation.navigate("Login")} />

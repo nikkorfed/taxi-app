@@ -22,7 +22,7 @@ export default Login = ({ navigation }) => {
           <View style={wrapper}>
             <View>
               <BackButton onPress={() => navigation.goBack()} />
-              <Text style={styles.title}>Введите код</Text>
+              <Text style={styles.h1}>Введите код</Text>
               <Text style={styles.subtitle}>Чтобы продолжить, введите одноразовый 6-значный код, отправленный на ваш телефон.</Text>
               <CodeInput style={input} state={[code, setCode]} />
               <ErrorMessage error={error} />

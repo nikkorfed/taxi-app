@@ -25,7 +25,7 @@ export default Login = ({ navigation }) => {
           <View style={wrapper}>
             <View>
               <View style={{ height: 70 }} />
-              <Text style={styles.title}>Регистрация</Text>
+              <Text style={styles.h1}>Регистрация</Text>
               <Text style={styles.subtitle}>Введите имя и фамилию для регистрации в приложении.</Text>
               <TextInput style={input} state={[name, setName]} placeholder="Имя" />
               <TextInput style={input} state={[lastName, setLastName]} placeholder="Фамилия" />
