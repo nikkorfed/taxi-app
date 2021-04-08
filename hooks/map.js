@@ -104,5 +104,6 @@ export default () => {
     options: { value: options, get: getOptions, choose: chooseOption },
     route: { value: route, draw: drawRoute, animate: animateRoute },
     toLocation,
+    toCurrentLocation,
   };
 };

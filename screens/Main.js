@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { ScrollView, View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 
-import { MaterialIcons, AntDesign } from "@expo/vector-icons";
+import { AntDesign, FontAwesome, MaterialIcons } from "@expo/vector-icons";
 
 import useAuth from "../hooks/auth";
 import useMap from "../hooks/map";
@@ -16,7 +16,7 @@ import { TextInput } from "../components/Inputs";
 import styles from "../styles";
 
 export default Main = ({ navigation }) => {
-  const { map, from, to, options, route, toLocation } = useMap();
+  const { map, from, to, options, route, toLocation, toCurrentLocation } = useMap();
   const bottom = useBottom();
   const [scroll, setScroll] = useState(false);
 
@@ -26,7 +26,7 @@ export default Main = ({ navigation }) => {
 
   useEffect(() => {
     options.value.length ? setScroll(true) : setScroll(false);
-  }, [options])
+  }, [options]);
 
   return (
     <>
@@ -46,6 +46,9 @@ export default Main = ({ navigation }) => {
       </View>
       <TouchableOpacity style={screen.menuButton} onPress={navigation.openDrawer} activeOpacity={0.8}>
         <MaterialIcons name="menu" size={20} color="#333" />
+      </TouchableOpacity>
+      <TouchableOpacity style={screen.locationButton} onPress={toCurrentLocation} activeOpacity={0.8}>
+        <FontAwesome name="location-arrow" size={20} color="#333" />
       </TouchableOpacity>
       <View style={screen.destination}>
         <TouchableOpacity style={screen.destinationInput} onPress={bottom.open} activeOpacity={0.8}>
@@ -83,11 +86,28 @@ const screen = StyleSheet.create({
     bottom: 80,
   },
   menuButton: {
+    justifyContent: "center",
+    alignItems: "center",
     position: "absolute",
     top: getStatusBarHeight() + 10,
     left: 15,
     borderRadius: 10,
-    padding: 10,
+    height: 40,
+    width: 40,
+    backgroundColor: "white",
+    shadowColor: "black",
+    shadowRadius: 15,
+    shadowOpacity: 0.15,
+  },
+  locationButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    right: 15,
+    bottom: 85,
+    borderRadius: 10,
+    height: 40,
+    width: 40,
     backgroundColor: "white",
     shadowColor: "black",
     shadowRadius: 15,
