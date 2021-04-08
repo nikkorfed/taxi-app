@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
+import useBottomSheet from "../hooks/bottomSheet";
+
 import { parseRoute } from "../utils/route";
 import sleep from "../utils/sleep";
 
@@ -10,9 +12,11 @@ export default () => {
   const [options, setOptions] = useState([]);
   const [route, setRoute] = useState([]);
 
-  const map = useRef(null);
+  const routeSheet = useBottomSheet();
 
-  let toLocation = (target) => map.current.animateCamera({ center: target, zoom: 16 }, { duration: 300 });
+  const mapRef = useRef(null);
+
+  let toLocation = (target) => mapRef.current.animateCamera({ center: target, zoom: 16 }, { duration: 300 });
   let toCurrentLocation = () => navigator.geolocation.getCurrentPosition(({ coords }) => toLocation(coords));
 
   let editFrom = (text) => setFrom({ text });
@@ -68,13 +72,13 @@ export default () => {
 
     setOptions([]);
     setRoute(route);
-    map.current.fitToCoordinates(route, { edgePadding: { top: 100, left: 15, right: 15, bottom: 150 }, animated: true });
+    mapRef.current.fitToCoordinates(route, { edgePadding: { top: 100, left: 15, right: 15, bottom: 150 }, animated: true });
   };
 
   let animateRoute = async () => {
     let step = 10000 / route.length;
     for (let point of route) {
-      map.current.animateCamera({ center: point, zoom: 14 }, { duration: step });
+      mapRef.current.animateCamera({ center: point, zoom: 14 }, { duration: step });
       await sleep(step);
     }
   };
@@ -98,12 +102,13 @@ export default () => {
   }, [from, to]);
 
   return {
-    map,
+    mapRef,
+    toLocation,
+    toCurrentLocation,
     from: { value: from.text, set: editFrom, reset: resetFrom },
     to: { value: to.text, set: editTo, reset: resetTo },
     options: { value: options, get: getOptions, choose: chooseOption },
     route: { value: route, draw: drawRoute, animate: animateRoute },
-    toLocation,
-    toCurrentLocation,
+    sheets: { route: routeSheet },
   };
 };

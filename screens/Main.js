@@ -1,36 +1,23 @@
-import React, { useState, useEffect, useRef } from "react";
-import { ScrollView, View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React from "react";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 
 import { AntDesign, FontAwesome, MaterialIcons } from "@expo/vector-icons";
 
-import useAuth from "../hooks/auth";
 import useMap from "../hooks/map";
-import useBottom from "../hooks/bottom";
 
 import MapView from "../components/MapView";
 import { Button } from "../components/Button";
-import Bottom from "../components/Bottom";
-import { TextInput } from "../components/Inputs";
+import RouteSheet from "../components/RouteSheet";
 
 import styles from "../styles";
 
 export default Main = ({ navigation }) => {
-  const { map, from, to, options, route, toLocation, toCurrentLocation } = useMap();
-  const bottom = useBottom();
-  const [scroll, setScroll] = useState(false);
-
-  useEffect(() => {
-    route.value.length && bottom.close();
-  }, [route.value]);
-
-  useEffect(() => {
-    options.value.length ? setScroll(true) : setScroll(false);
-  }, [options]);
+  const { mapRef, toLocation, toCurrentLocation, from, to, options, route, sheets } = useMap();
 
   return (
     <>
-      <MapView route={route.value} map={map} />
+      <MapView map={mapRef} route={route.value} />
       <View style={screen.bottom}>
         {Boolean(from.value.point) && Boolean(to.value.point) && !route.length && (
           <Button title="Поехали" onPress={drawRoute} color={true} shadow={true} style={{ marginTop: 10, width: "100%" }} />
@@ -51,26 +38,12 @@ export default Main = ({ navigation }) => {
         <FontAwesome name="location-arrow" size={20} color="#333" />
       </TouchableOpacity>
       <View style={screen.destination}>
-        <TouchableOpacity style={screen.destinationInput} onPress={bottom.open} activeOpacity={0.8}>
+        <TouchableOpacity style={screen.destinationInput} onPress={sheets.route.open} activeOpacity={0.8}>
           <Text style={screen.destinationText}>Куда поедем?</Text>
           <AntDesign name="arrowright" size={20} color="#333" />
         </TouchableOpacity>
       </View>
-      <Bottom {...bottom}>
-        <View style={screen.inputs}>
-          <TextInput state={from} style={screen.inputFrom} placeholder="Откуда" onSubmitEditing={() => options.get("from")} />
-          <TextInput state={to} style={screen.inputTo} placeholder="Куда" onSubmitEditing={() => options.get("to")} />
-        </View>
-        <ScrollView style={screen.options} scrollEnabled={scroll}>
-          {options.value.length > 0 &&
-            options.value.map((option, index) => (
-              <TouchableOpacity key={index} style={screen.option} onPress={() => options.choose(option)}>
-                <Text style={screen.optionText}>{option.text}</Text>
-                <Text style={screen.optionDescription}>{option.description}</Text>
-              </TouchableOpacity>
-            ))}
-        </ScrollView>
-      </Bottom>
+      <RouteSheet sheet={sheets.route} from={from} to={to} options={options} route={route} />
     </>
   );
 };
@@ -137,36 +110,5 @@ const screen = StyleSheet.create({
     fontFamily: "Rubik_500Medium",
     fontSize: 15,
     color: "#333",
-  },
-  inputs: {
-    overflow: "hidden",
-    borderRadius: 10,
-    paddingHorizontal: 15,
-  },
-  inputFrom: {
-    borderBottomWidth: 1,
-    borderColor: "#eee",
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
-  },
-  inputTo: {
-    borderTopLeftRadius: 0,
-    borderTopRightRadius: 0,
-  },
-  options: {
-    flex: 1,
-    paddingHorizontal: 15,
-  },
-  option: {
-    borderBottomWidth: 1,
-    borderColor: "whitesmoke",
-    paddingVertical: 10,
-  },
-  optionText: {
-    marginTop: 5,
-    fontFamily: "Rubik_500Medium",
-  },
-  optionDescription: {
-    color: "#888",
   },
 });

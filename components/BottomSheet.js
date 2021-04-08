@@ -8,7 +8,7 @@ import { AntDesign } from "@expo/vector-icons";
 
 import styles from "../styles";
 
-export default Bottom = ({ view, overlay, gestureHandler, children, close }) => {
+export default ({ view, overlay, gestureHandler, children, close }) => {
   return (
     <>
       <Animated.View style={[screen.overlay, overlay]} />
