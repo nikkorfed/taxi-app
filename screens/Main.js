@@ -18,10 +18,15 @@ import styles from "../styles";
 export default Main = ({ navigation }) => {
   const { map, from, to, options, route, toLocation } = useMap();
   const bottom = useBottom();
+  const [scroll, setScroll] = useState(false);
 
   useEffect(() => {
     route.value.length && bottom.close();
   }, [route.value]);
+
+  useEffect(() => {
+    options.value.length ? setScroll(true) : setScroll(false);
+  }, [options])
 
   return (
     <>
@@ -53,7 +58,7 @@ export default Main = ({ navigation }) => {
           <TextInput state={from} style={screen.inputFrom} placeholder="Откуда" onSubmitEditing={() => options.get("from")} />
           <TextInput state={to} style={screen.inputTo} placeholder="Куда" onSubmitEditing={() => options.get("to")} />
         </View>
-        <ScrollView style={screen.options}>
+        <ScrollView style={screen.options} scrollEnabled={scroll}>
           {options.value.length > 0 &&
             options.value.map((option, index) => (
               <TouchableOpacity key={index} style={screen.option} onPress={() => options.choose(option)}>
