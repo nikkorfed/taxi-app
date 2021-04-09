@@ -18,10 +18,10 @@ export default (nav) => {
 
   let submitLogin = async (phone) => {
     const permission = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-    if (!permission.granted) return;
+    // if (!permission.granted) return; // Включить обратно перед релизом
 
     const pushToken = await Notifications.getExpoPushTokenAsync().catch((error) => console.log("Ошибка при получении Push-токена:", error));
-    const response = await api.users.auth({ phone, pushToken: pushToken.data });
+    const response = await api.users.auth({ phone, pushToken: pushToken?.data });
     setData({ phone });
 
     if (!response.error) navigation.navigate("CodeEntry");
