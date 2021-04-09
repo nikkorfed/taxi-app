@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import MapView, { PROVIDER_GOOGLE, UrlTile, Polyline, Marker } from "react-native-maps";
 
