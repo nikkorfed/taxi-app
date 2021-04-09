@@ -4,7 +4,7 @@ import { StyleSheet, ScrollView, View, Text, TouchableOpacity } from "react-nati
 import BottomSheet from "./BottomSheet";
 import { TextInput } from "./Inputs";
 
-export default ({ sheet, from, to, options, route }) => {
+export default ({ sheet, map: { from, to, options, route } }) => {
   const [scroll, setScroll] = useState(false);
 
   useEffect(() => {

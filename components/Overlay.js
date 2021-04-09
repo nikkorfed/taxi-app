@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { AntDesign, Entypo, FontAwesome, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 
-export default ({ navigation, zoomIn, zoomOut, toCurrentLocation, sheets }) => {
+export default ({ navigation, map: { zoomIn, zoomOut, toCurrentLocation, sheets } }) => {
   const center = useWindowDimensions().height / 2;
   const insets = useSafeAreaInsets();
 

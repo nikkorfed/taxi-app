@@ -11,7 +11,8 @@ import RouteSheet from "../components/RouteSheet";
 import styles from "../styles";
 
 export default Main = ({ navigation }) => {
-  const { mapRef, zoomIn, zoomOut, toLocation, toCurrentLocation, from, to, options, route, sheets } = useMap();
+  const map = useMap();
+  const { mapRef, zoomIn, zoomOut, toLocation, toCurrentLocation, from, to, options, route, sheets } = map;
 
   return (
     <>
@@ -29,8 +30,8 @@ export default Main = ({ navigation }) => {
           </>
         )}
       </View>
-      <Overlay navigation={navigation} zoomIn={zoomIn} zoomOut={zoomOut} toCurrentLocation={toCurrentLocation} sheets={sheets} />
-      <RouteSheet sheet={sheets.route} from={from} to={to} options={options} route={route} />
+      <Overlay navigation={navigation} map={map} />
+      <RouteSheet sheet={sheets.route} map={map} />
     </>
   );
 };
