@@ -1,5 +1,6 @@
 import React from "react";
 import { SafeAreaView, View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 
 import useAuth from "../hooks/auth";
 
@@ -26,7 +27,12 @@ export default Menu = ({ navigation }) => {
 
 const LogoutButton = ({ navigation }) => {
   const auth = useAuth(navigation);
-  return <SimpleButton title="Выйти" style={[screen.item, screen.logout]} onPress={auth.logout} />;
+  return (
+    <View style={[styles.button, styles.simpleButton, screen.item, screen.logout]}>
+      <MaterialIcons name="logout" style={screen.logoutIcon} size={20} color="dodgerblue" />
+      <SimpleButton title="Выйти" style={screen.logoutText} onPress={auth.logout} />
+    </View>
+  );
 };
 
 const screen = StyleSheet.create({
@@ -35,5 +41,7 @@ const screen = StyleSheet.create({
   userImage: { marginRight: 15, borderRadius: 20, height: 40, width: 40, backgroundColor: "whitesmoke" },
   userText: { ...styles.buttonText, color: "#333" },
   item: { alignItems: "flex-start", paddingVertical: 18, width: "100%", color: "#333" },
-  logout: { marginTop: "auto", color: "dodgerblue" },
+  logout: { flexDirection: "row", justifyContent: "flex-start", alignItems: "center", marginTop: "auto" },
+  logoutIcon: { marginRight: 15 },
+  logoutText: { paddingVertical: 0, paddingHorizontal: 0, color: "dodgerblue" },
 });
