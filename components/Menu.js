@@ -28,10 +28,10 @@ export default Menu = ({ navigation }) => {
 const LogoutButton = ({ navigation }) => {
   const auth = useAuth(navigation);
   return (
-    <View style={[styles.button, styles.simpleButton, screen.item, screen.logout]}>
+    <TouchableOpacity onPress={auth.logout} style={[styles.button, styles.simpleButton, screen.item, screen.logout]} activeOpacity={0.8}>
       <MaterialIcons name="logout" style={screen.logoutIcon} size={20} color="dodgerblue" />
       <SimpleButton title="Выйти" style={screen.logoutText} onPress={auth.logout} />
-    </View>
+    </TouchableOpacity>
   );
 };
 
