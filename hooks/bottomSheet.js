@@ -1,35 +1,37 @@
 import { useWindowDimensions } from "react-native";
-import { useSharedValue, useAnimatedStyle, useAnimatedGestureHandler, withSpring, interpolate, Extrapolate } from "react-native-reanimated";
+import { useSharedValue, useAnimatedStyle, useAnimatedGestureHandler, withSpring, interpolate } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-export default () => {
-  const offset = 40;
-  const config = { damping: 80, overshootClamping: true, restDisplacementThreshold: 0.1, restSpeedThreshold: 0.1, stiffness: 500 };
-
+export default (props) => {
   const window = useWindowDimensions();
-  const pos = useSharedValue(window.height);
-  const opacity = useSharedValue(0);
+  const insets = useSafeAreaInsets();
 
-  const view = useAnimatedStyle(() => ({ top: interpolate(pos.value, [-500, offset, window.height], [0, offset, window.height]) }));
+  const config = { damping: 80, overshootClamping: true, restDisplacementThreshold: 0.1, restSpeedThreshold: 0.1, stiffness: 500 };
+  const start = props?.position ? window.height - props.position : insets.top * 2;
+  const opacity = props?.opacity ? props.opacity : 0.5;
+
+  const position = useSharedValue(window.height);
+
+  const view = useAnimatedStyle(() => ({ top: interpolate(position.value, [-500, start, window.height], [0, start, window.height]) }));
   const overlay = useAnimatedStyle(() => ({
-    display: pos.value < window.height ? "flex" : "none",
-    opacity: interpolate(pos.value, [0, offset, window.height], [0.5, 0.5, 0]),
+    display: position.value < window.height ? "flex" : "none",
+    opacity: interpolate(position.value, [0, start, window.height], [opacity, opacity, 0]),
   }));
 
   const open = () => {
     "worklet";
-    pos.value = withSpring(offset, config);
-    opacity.value = withSpring(0.5, config);
+    position.value = withSpring(start, config);
   };
+
   const close = () => {
     "worklet";
-    pos.value = withSpring(window.height, config);
-    opacity.value = withSpring(0, config);
+    position.value = withSpring(window.height, config);
   };
 
   const gestureHandler = useAnimatedGestureHandler({
-    onStart: (_, ctx) => (ctx.start = pos.value),
-    onActive: (event, ctx) => (pos.value = ctx.start + event.translationY),
-    onEnd: (event, _) => (pos.value > 150 ? close() : open()),
+    onStart: (_, ctx) => (ctx.start = position.value),
+    onActive: (event, ctx) => (position.value = ctx.start + event.translationY),
+    onEnd: (event, _) => (position.value > 150 ? close() : open()),
   });
 
   return { open, close, view, overlay, gestureHandler };
