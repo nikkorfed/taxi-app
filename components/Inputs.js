@@ -35,7 +35,7 @@ export let TextInput = ({ style, state, ...props }) => {
 };
 
 export let PhoneInput = ({ style, state, ...props }) => {
-  let [value, set, reset, resetable] = getState(state);
+  let { value, set, reset, resetable } = getState(state);
 
   props.style = [styles.input, style];
   props.type = "custom";
@@ -43,16 +43,16 @@ export let PhoneInput = ({ style, state, ...props }) => {
   props.keyboardType = "number-pad";
   props.placeholder = "Телефон";
 
-  let editPhone = (text) => {
+  let edit = (text) => {
     text == "" || text == "+" ? set("+7") : set(text);
     text.length == 16 ? Keyboard.dismiss() : null;
   };
 
-  props.onFocus = () => phone == "" && editPhone("");
+  props.onFocus = () => value == "" && edit("");
 
   return (
     <View>
-      <TextInputMask value={value} onChangeText={editPhone} {...props} />
+      <TextInputMask value={value} onChangeText={edit} {...props} />
       {resetable && (
         <TouchableOpacity style={styles.inputReset} onPress={reset}>
           <AntDesign name="close" size={20} color="#ccc" />
@@ -63,7 +63,7 @@ export let PhoneInput = ({ style, state, ...props }) => {
 };
 
 export let PasswordInput = ({ style, state, ...props }) => {
-  let [value, set] = getState(state);
+  let { value, set } = getState(state);
 
   props.style = [styles.input, style];
   props.secureTextEntry = true;
@@ -73,16 +73,16 @@ export let PasswordInput = ({ style, state, ...props }) => {
 };
 
 export let CodeInput = ({ style, state, ...props }) => {
-  let [value, set] = getState(state);
+  let { value, set } = getState(state);
 
   props.style = [styles.input, style];
   props.keyboardType = "number-pad";
   props.placeholder = "Одноразовый код";
 
-  let editCode = (text) => {
+  let edit = (text) => {
     set(text);
     text.length == 6 ? Keyboard.dismiss() : null;
   };
 
-  return <Input value={value} onChangeText={editCode} {...props} />;
+  return <Input value={value} onChangeText={edit} {...props} />;
 };
