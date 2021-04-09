@@ -16,6 +16,15 @@ export default () => {
 
   const mapRef = useRef(null);
 
+  let zoomIn = async () => {
+    let { zoom } = await mapRef.current.getCamera();
+    await mapRef.current.animateCamera({ zoom: zoom + 1 }, { duration: 300 });
+  };
+  let zoomOut = async () => {
+    let { zoom } = await mapRef.current.getCamera();
+    await mapRef.current.animateCamera({ zoom: zoom - 1 }, { duration: 300 });
+  };
+
   let toLocation = (target) => mapRef.current.animateCamera({ center: target, zoom: 16 }, { duration: 300 });
   let toCurrentLocation = () => navigator.geolocation.getCurrentPosition(({ coords }) => toLocation(coords));
 
@@ -103,6 +112,8 @@ export default () => {
 
   return {
     mapRef,
+    zoomIn,
+    zoomOut,
     toLocation,
     toCurrentLocation,
     from: { value: from.text, set: editFrom, reset: resetFrom },

@@ -1,8 +1,8 @@
 import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, useWindowDimensions } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 
-import { AntDesign, FontAwesome, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign, FontAwesome, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 
 import useMap from "../hooks/map";
 
@@ -13,7 +13,8 @@ import RouteSheet from "../components/RouteSheet";
 import styles from "../styles";
 
 export default Main = ({ navigation }) => {
-  const { mapRef, toLocation, toCurrentLocation, from, to, options, route, sheets } = useMap();
+  const { mapRef, zoomIn, zoomOut, toLocation, toCurrentLocation, from, to, options, route, sheets } = useMap();
+  const center = useWindowDimensions().height / 2;
 
   return (
     <>
@@ -33,6 +34,12 @@ export default Main = ({ navigation }) => {
       </View>
       <TouchableOpacity style={screen.menuButton} onPress={navigation.openDrawer} activeOpacity={0.8}>
         <MaterialIcons name="menu" size={20} color="#333" />
+      </TouchableOpacity>
+      <TouchableOpacity style={[screen.zoomButton, { top: center - (40 + 15 / 2) }]} onPress={zoomIn} activeOpacity={0.8}>
+        <FontAwesome5 name="plus" size={20} color="#333" />
+      </TouchableOpacity>
+      <TouchableOpacity style={[screen.zoomButton, { top: center + 15 / 2 }]} onPress={zoomOut} activeOpacity={0.8}>
+        <FontAwesome5 name="minus" size={20} color="#333" />
       </TouchableOpacity>
       <TouchableOpacity style={screen.locationButton} onPress={toCurrentLocation} activeOpacity={0.8}>
         <FontAwesome name="location-arrow" size={20} color="#333" />
@@ -64,6 +71,19 @@ const screen = StyleSheet.create({
     position: "absolute",
     top: getStatusBarHeight() + 10,
     left: 15,
+    borderRadius: 10,
+    height: 40,
+    width: 40,
+    backgroundColor: "white",
+    shadowColor: "black",
+    shadowRadius: 15,
+    shadowOpacity: 0.15,
+  },
+  zoomButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    right: 15,
     borderRadius: 10,
     height: 40,
     width: 40,
