@@ -17,7 +17,7 @@ export default Main = ({ navigation }) => {
 
   return (
     <>
-      <MapView map={mapRef} route={route.value} />
+      <MapView mapRef={mapRef} route={route.value} />
       <View style={screen.bottom}>
         {Boolean(from.value.point) && Boolean(to.value.point) && !route.length && (
           <Button title="Поехали" onPress={drawRoute} color={true} shadow={true} style={{ marginTop: 10, width: "100%" }} />
