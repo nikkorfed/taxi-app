@@ -7,7 +7,7 @@ import { AntDesign, Entypo, FontAwesome, FontAwesome5, MaterialIcons } from "@ex
 import MapContext from "../contexts/map";
 
 export default ({ navigation }) => {
-  const { maxZoomLevel, camera, zoomIn, zoomOut, toCurrentLocation, sheets } = useContext(MapContext);
+  const { maxZoomLevel, camera, actions, sheets } = useContext(MapContext);
   const center = useWindowDimensions().height / 2;
   const insets = useSafeAreaInsets();
 
@@ -17,14 +17,14 @@ export default ({ navigation }) => {
         <MaterialIcons name="menu" size={20} color="#333" />
       </TouchableOpacity>
       <View style={[screen.zoomButtons, { top: center - 40 }]}>
-        <TouchableOpacity style={screen.zoomInButton} onPress={zoomIn} activeOpacity={0.8}>
-          <Entypo name="plus" size={20} color={camera.zoom == maxZoomLevel ? "#aaa" : "#333"} />
+        <TouchableOpacity style={screen.zoomInButton} onPress={actions.zoomIn} activeOpacity={0.8}>
+          <Entypo name="plus" size={20} color={camera.value.zoom == maxZoomLevel ? "#aaa" : "#333"} />
         </TouchableOpacity>
-        <TouchableOpacity style={screen.zoomOutButton} onPress={zoomOut} activeOpacity={0.8}>
-          <Entypo name="minus" size={20} color={camera.zoom == 2 ? "#aaa" : "#333"} />
+        <TouchableOpacity style={screen.zoomOutButton} onPress={actions.zoomOut} activeOpacity={0.8}>
+          <Entypo name="minus" size={20} color={camera.value.zoom == 2 ? "#aaa" : "#333"} />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={[screen.locationButton, { top: center + 40 + 15 }]} onPress={toCurrentLocation} activeOpacity={0.8}>
+      <TouchableOpacity style={[screen.locationButton, { top: center + 40 + 15 }]} onPress={actions.toCurrentLocation} activeOpacity={0.8}>
         <FontAwesome name="location-arrow" size={18} color="#333" />
       </TouchableOpacity>
       <View style={[screen.destination, { paddingBottom: insets.bottom > 0 ? insets.bottom : screen.destination.padding }]}>

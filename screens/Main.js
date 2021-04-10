@@ -14,7 +14,7 @@ import styles from "../styles";
 
 export default Main = ({ navigation }) => {
   const map = useMap();
-  const { mapRef, zoomIn, zoomOut, toLocation, toCurrentLocation, from, to, options, route, sheets } = map;
+  const { mapRef, actions, from, to, options, route, sheets } = map;
 
   return (
     <MapContext.Provider value={map}>
@@ -26,8 +26,8 @@ export default Main = ({ navigation }) => {
         {Boolean(route.length) && (
           <>
             <Button title="Машрут" onPress={() => route.show()} color={true} shadow={true} style={{ marginBottom: 10, width: "100%" }} />
-            <Button title="Старт" onPress={() => toLocation(route[0])} shadow={true} style={{ flex: 1, marginRight: 10 }} />
-            <Button title="Финиш" onPress={() => toLocation(route[route.length - 1])} shadow={true} style={{ flex: 1 }} />
+            <Button title="Старт" onPress={() => actions.toLocation(route[0])} shadow={true} style={{ flex: 1, marginRight: 10 }} />
+            <Button title="Финиш" onPress={() => actions.toLocation(route[route.length - 1])} shadow={true} style={{ flex: 1 }} />
             <Button title="Проехать по маршруту" onPress={animateRoute} shadow={true} style={{ marginTop: 10, width: "100%" }} />
           </>
         )}
