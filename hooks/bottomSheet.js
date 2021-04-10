@@ -8,11 +8,14 @@ export default (props) => {
 
   const config = { damping: 80, overshootClamping: true, restDisplacementThreshold: 0.1, restSpeedThreshold: 0.1, stiffness: 500 };
   const start = props?.position ? window.height - props.position : insets.top * 2;
-  const opacity = props?.opacity ? props.opacity : 0.5;
+  const opacity = props?.opacity ?? 0.5;
 
   const position = useSharedValue(window.height);
 
-  const view = useAnimatedStyle(() => ({ top: interpolate(position.value, [-500, start, window.height], [0, start, window.height]) }));
+  const view = useAnimatedStyle(() => ({
+    top: interpolate(position.value, [-500, start, window.height], [start - 30, start, window.height]),
+  }));
+
   const overlay = useAnimatedStyle(() => ({
     display: position.value < window.height ? "flex" : "none",
     opacity: interpolate(position.value, [0, start, window.height], [opacity, opacity, 0]),

@@ -12,7 +12,7 @@ export default () => {
   const [options, setOptions] = useState([]);
   const [route, setRoute] = useState([]);
 
-  const routeSheet = useBottomSheet();
+  const routeSheet = useBottomSheet({ position: 300, opacity: 0 });
 
   const mapRef = useRef(null);
 
