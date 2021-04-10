@@ -1,6 +1,8 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
+import MapContext from "../contexts/map";
+
 import useMap from "../hooks/map";
 
 import MapView from "../components/MapView";
@@ -15,7 +17,7 @@ export default Main = ({ navigation }) => {
   const { mapRef, zoomIn, zoomOut, toLocation, toCurrentLocation, from, to, options, route, sheets } = map;
 
   return (
-    <>
+    <MapContext.Provider value={map}>
       <MapView mapRef={mapRef} route={route.value} />
       <View style={screen.bottom}>
         {Boolean(from.value.point) && Boolean(to.value.point) && !route.length && (
@@ -30,9 +32,9 @@ export default Main = ({ navigation }) => {
           </>
         )}
       </View>
-      <Overlay navigation={navigation} map={map} />
-      <RouteSheet sheet={sheets.route} map={map} />
-    </>
+      <Overlay navigation={navigation} />
+      <RouteSheet sheet={sheets.route} />
+    </MapContext.Provider>
   );
 };
 

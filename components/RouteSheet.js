@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, ScrollView, View, Text, TouchableOpacity } from "react-native";
+
+import MapContext from "../contexts/map";
 
 import BottomSheet from "./BottomSheet";
 import { TextInput } from "./Inputs";
 
-export default ({ sheet, map: { from, to, options, route } }) => {
+export default ({ sheet }) => {
+  const { from, to, options, route } = useContext(MapContext);
   const [scroll, setScroll] = useState(false);
 
   useEffect(() => {

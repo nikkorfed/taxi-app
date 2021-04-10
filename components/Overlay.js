@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { AntDesign, Entypo, FontAwesome, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 
-export default ({ navigation, map: { zoomIn, zoomOut, toCurrentLocation, sheets } }) => {
+import MapContext from "../contexts/map";
+
+export default ({ navigation }) => {
+  const { zoomIn, zoomOut, toCurrentLocation, sheets } = useContext(MapContext);
   const center = useWindowDimensions().height / 2;
   const insets = useSafeAreaInsets();
 
