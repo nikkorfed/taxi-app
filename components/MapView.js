@@ -1,16 +1,19 @@
-import React from "react";
-
+import React, { useContext } from "react";
 import MapView, { PROVIDER_GOOGLE, UrlTile, Polyline, Marker } from "react-native-maps";
 
+import MapContext from "../contexts/map";
+
 export default ({ mapRef, route }) => {
+  const { maxZoomLevel, updateCamera } = useContext(MapContext);
+
   const tilesUrl = "https://tile2.maps.2gis.com/tiles?x={x}&y={y}&z={z}&v=1&r=g&ts=online_hd";
   // const tilesUrl = "http://vec04.maps.yandex.net/tiles?l=map&v=4.55.2&z={z}&x={x}&y={y}&scale=2&lang=ru_RU";
 
   const props = {
     mapType: "none",
     provider: PROVIDER_GOOGLE,
-    minZoomLevel: 15,
-    maxZoomLevel: 17,
+    maxZoomLevel,
+    onRegionChangeComplete: updateCamera,
     showsUserLocation: true,
     style: { flex: 1, opacity: 0.7 },
     ref: mapRef,

@@ -7,6 +7,7 @@ import { parseRoute } from "../utils/route";
 import sleep from "../utils/sleep";
 
 export default () => {
+  const [camera, setCamera] = useState({});
   const [from, setFrom] = useState({ text: "" });
   const [to, setTo] = useState({ text: "" });
   const [options, setOptions] = useState([]);
@@ -15,11 +16,18 @@ export default () => {
   const routeSheet = useBottomSheet({ position: 300, opacity: 0 });
 
   const mapRef = useRef(null);
+  const maxZoomLevel = 16;
+
+  let updateCamera = async () => {
+    let camera = await mapRef.current.getCamera();
+    setCamera(camera);
+  };
 
   let zoomIn = async () => {
     let { zoom } = await mapRef.current.getCamera();
     await mapRef.current.animateCamera({ zoom: zoom + 1 }, { duration: 300 });
   };
+
   let zoomOut = async () => {
     let { zoom } = await mapRef.current.getCamera();
     await mapRef.current.animateCamera({ zoom: zoom - 1 }, { duration: 300 });
@@ -105,13 +113,19 @@ export default () => {
   };
 
   useEffect(toCurrentLocation, []);
+
   useEffect(() => {
     if (!from.longitude || !from.latitude || !to.longitude || !to.latitude) return;
     drawRoute();
   }, [from, to]);
 
+  useEffect(() => {}, []);
+
   return {
     mapRef,
+    maxZoomLevel,
+    camera,
+    updateCamera,
     zoomIn,
     zoomOut,
     toLocation,
